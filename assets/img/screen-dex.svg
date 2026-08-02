@@ -1,0 +1,121 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 900" width="440" height="900" role="img" aria-label="포획 도감 화면 — 수집한 몬스터 카드 목록">
+  <!-- ※ 자리표시자입니다. 실제 앱 스크린샷(PNG/WebP)으로 교체하세요. -->
+  <defs>
+    <clipPath id="d-screen"><rect width="440" height="900" rx="20"/></clipPath>
+    <style>
+      .t { font-family: Pretendard, system-ui, -apple-system, 'Malgun Gothic', 'Noto Sans KR', sans-serif; }
+    </style>
+  </defs>
+
+  <g clip-path="url(#d-screen)">
+    <rect width="440" height="900" fill="#F6F2FF"/>
+
+    <text class="t" x="30" y="40" fill="#6B6480" font-size="16" font-weight="600">9:41</text>
+    <rect x="372" y="27" width="30" height="14" rx="4" fill="#6B6480" opacity=".4"/>
+
+    <!-- 헤더 -->
+    <text class="t" x="24" y="96" fill="#211A33" font-size="26" font-weight="700">도감</text>
+    <rect x="330" y="72" width="86" height="30" rx="15" fill="#F3EEFF"/>
+    <text class="t" x="373" y="93" fill="#7C3AED" font-size="15" font-weight="700" text-anchor="middle">24 / 60</text>
+
+    <rect x="24" y="118" width="392" height="8" rx="4" fill="#E4DCF5"/>
+    <rect x="24" y="118" width="157" height="8" rx="4" fill="#7C3AED"/>
+
+    <!-- 필터 칩 -->
+    <g class="t" font-size="14" font-weight="600">
+      <rect x="24" y="146" width="74" height="32" rx="16" fill="#7C3AED"/>
+      <text x="61" y="167" fill="#fff" text-anchor="middle">전체</text>
+      <rect x="106" y="146" width="74" height="32" rx="16" fill="#fff" stroke="#E4DCF5"/>
+      <text x="143" y="167" fill="#6B6480" text-anchor="middle">보유</text>
+      <rect x="188" y="146" width="86" height="32" rx="16" fill="#fff" stroke="#E4DCF5"/>
+      <text x="231" y="167" fill="#6B6480" text-anchor="middle">미보유</text>
+    </g>
+
+    <!-- 카드 그리드 3열 × 4행 -->
+    <g>
+      <!-- row 1 -->
+      <g transform="translate(24,198)">
+        <rect width="122" height="152" rx="16" fill="#fff" stroke="#E4DCF5"/>
+        <circle cx="61" cy="62" r="34" fill="#7C3AED"/><circle cx="50" cy="56" r="7" fill="#fff"/><circle cx="72" cy="56" r="7" fill="#fff"/>
+        <path d="M48 76c8 8 18 8 26 0" stroke="#fff" stroke-width="4" fill="none" stroke-linecap="round"/>
+        <text class="t" x="61" y="122" fill="#211A33" font-size="14" font-weight="700" text-anchor="middle">고블린</text>
+        <text class="t" x="61" y="140" fill="#6B6480" font-size="12" text-anchor="middle">No.001</text>
+      </g>
+      <g transform="translate(159,198)">
+        <rect width="122" height="152" rx="16" fill="#fff" stroke="#E4DCF5"/>
+        <path d="M61 28c22 0 38 18 38 40s-16 36-38 36-38-14-38-36 16-40 38-40Z" fill="#F97316"/>
+        <circle cx="50" cy="58" r="7" fill="#fff"/><circle cx="72" cy="58" r="7" fill="#fff"/>
+        <text class="t" x="61" y="122" fill="#211A33" font-size="14" font-weight="700" text-anchor="middle">불꽃여우</text>
+        <text class="t" x="61" y="140" fill="#6B6480" font-size="12" text-anchor="middle">No.002</text>
+      </g>
+      <g transform="translate(294,198)">
+        <rect width="122" height="152" rx="16" fill="#fff" stroke="#E4DCF5"/>
+        <rect x="27" y="30" width="68" height="68" rx="20" fill="#22C55E"/>
+        <circle cx="49" cy="60" r="7" fill="#fff"/><circle cx="73" cy="60" r="7" fill="#fff"/>
+        <text class="t" x="61" y="122" fill="#211A33" font-size="14" font-weight="700" text-anchor="middle">숲지기</text>
+        <text class="t" x="61" y="140" fill="#6B6480" font-size="12" text-anchor="middle">No.003</text>
+      </g>
+
+      <!-- row 2 -->
+      <g transform="translate(24,362)">
+        <rect width="122" height="152" rx="16" fill="#fff" stroke="#E4DCF5"/>
+        <path d="M61 28l34 30-13 44H40L27 58Z" fill="#5B21B6"/>
+        <circle cx="52" cy="66" r="6" fill="#fff"/><circle cx="72" cy="66" r="6" fill="#fff"/>
+        <text class="t" x="61" y="122" fill="#211A33" font-size="14" font-weight="700" text-anchor="middle">수정골렘</text>
+        <text class="t" x="61" y="140" fill="#6B6480" font-size="12" text-anchor="middle">No.004</text>
+      </g>
+      <g transform="translate(159,362)">
+        <rect width="122" height="152" rx="16" fill="#F3EEFF" stroke="#E4DCF5"/>
+        <circle cx="61" cy="62" r="34" fill="#CFC4E6"/>
+        <text class="t" x="61" y="70" fill="#fff" font-size="30" font-weight="700" text-anchor="middle">?</text>
+        <text class="t" x="61" y="122" fill="#9A93AC" font-size="14" font-weight="700" text-anchor="middle">???</text>
+        <text class="t" x="61" y="140" fill="#9A93AC" font-size="12" text-anchor="middle">No.005</text>
+      </g>
+      <g transform="translate(294,362)">
+        <rect width="122" height="152" rx="16" fill="#F3EEFF" stroke="#E4DCF5"/>
+        <circle cx="61" cy="62" r="34" fill="#CFC4E6"/>
+        <text class="t" x="61" y="70" fill="#fff" font-size="30" font-weight="700" text-anchor="middle">?</text>
+        <text class="t" x="61" y="122" fill="#9A93AC" font-size="14" font-weight="700" text-anchor="middle">???</text>
+        <text class="t" x="61" y="140" fill="#9A93AC" font-size="12" text-anchor="middle">No.006</text>
+      </g>
+
+      <!-- row 3 -->
+      <g transform="translate(24,526)">
+        <rect width="122" height="152" rx="16" fill="#fff" stroke="#E4DCF5"/>
+        <path d="M27 92c0-30 15-52 34-52s34 22 34 52Z" fill="#0EA5E9"/>
+        <circle cx="52" cy="66" r="6" fill="#fff"/><circle cx="72" cy="66" r="6" fill="#fff"/>
+        <text class="t" x="61" y="122" fill="#211A33" font-size="14" font-weight="700" text-anchor="middle">물결정령</text>
+        <text class="t" x="61" y="140" fill="#6B6480" font-size="12" text-anchor="middle">No.007</text>
+      </g>
+      <g transform="translate(159,526)">
+        <rect width="122" height="152" rx="16" fill="#F3EEFF" stroke="#E4DCF5"/>
+        <circle cx="61" cy="62" r="34" fill="#CFC4E6"/>
+        <text class="t" x="61" y="70" fill="#fff" font-size="30" font-weight="700" text-anchor="middle">?</text>
+        <text class="t" x="61" y="122" fill="#9A93AC" font-size="14" font-weight="700" text-anchor="middle">???</text>
+        <text class="t" x="61" y="140" fill="#9A93AC" font-size="12" text-anchor="middle">No.008</text>
+      </g>
+      <g transform="translate(294,526)">
+        <rect width="122" height="152" rx="16" fill="#F3EEFF" stroke="#E4DCF5"/>
+        <circle cx="61" cy="62" r="34" fill="#CFC4E6"/>
+        <text class="t" x="61" y="70" fill="#fff" font-size="30" font-weight="700" text-anchor="middle">?</text>
+        <text class="t" x="61" y="122" fill="#9A93AC" font-size="14" font-weight="700" text-anchor="middle">???</text>
+        <text class="t" x="61" y="140" fill="#9A93AC" font-size="12" text-anchor="middle">No.009</text>
+      </g>
+    </g>
+
+    <!-- 하단 안내 -->
+    <rect x="24" y="702" width="392" height="86" rx="16" fill="#fff" stroke="#E4DCF5"/>
+    <circle cx="62" cy="745" r="18" fill="#F3EEFF"/>
+    <text class="t" x="62" y="752" fill="#F97316" font-size="20" font-weight="700" text-anchor="middle">!</text>
+    <text class="t" x="92" y="740" fill="#211A33" font-size="15" font-weight="700">오늘 3마리를 새로 잡았어요</text>
+    <text class="t" x="92" y="763" fill="#6B6480" font-size="13">이번 주 목표까지 2마리 남았습니다</text>
+
+    <!-- 탭바 -->
+    <rect x="0" y="812" width="440" height="88" fill="#fff"/>
+    <g class="t" font-size="12" font-weight="600" text-anchor="middle">
+      <circle cx="88" cy="848" r="4" fill="#6B6480"/><text x="88" y="876" fill="#6B6480">학습</text>
+      <circle cx="220" cy="848" r="6" fill="#7C3AED"/><text x="220" y="876" fill="#7C3AED">도감</text>
+      <circle cx="352" cy="848" r="4" fill="#6B6480"/><text x="352" y="876" fill="#6B6480">우리반</text>
+    </g>
+  </g>
+</svg>

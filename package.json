@@ -1,0 +1,16 @@
+{
+  "name": "wordquest-landing",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "description": "WORD QUEST 선생님·원장용 랜딩페이지 (정적 사이트)",
+  "scripts": {
+    "dev": "python3 -m http.server 8080",
+    "verify": "node tools/verify.mjs",
+    "verify:static": "node tools/verify.mjs --static",
+    "og": "node tools/render-og.mjs"
+  },
+  "devDependencies": {
+    "playwright-core": "^1.49.1"
+  }
+}

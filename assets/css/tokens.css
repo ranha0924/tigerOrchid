@@ -1,0 +1,117 @@
+/* ==========================================================================
+   타이거오키드 디자인 토큰
+   "난초의 보라로 단정하게, 호랑이의 오렌지로 생기 있게."
+
+   ★ 색을 새로 쓰고 싶으면 반드시 여기에 토큰을 먼저 만든다. HEX 하드코딩 금지.
+   ========================================================================== */
+
+/* ── 헤드라인 폰트 (눈누 CDN) ─────────────────────────────────────────────
+   CDN이 죽어도 아래 폴백 스택으로 한글이 정상 표시되도록 설계했다. */
+@font-face {
+  font-family: 'Paperlogy';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-8ExtraBold.woff2') format('woff2');
+  font-weight: 800;
+  font-style: normal;
+  font-display: swap;
+}
+@font-face {
+  font-family: 'Paperlogy';
+  src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/2408-3@1.0/Paperlogy-7Bold.woff2') format('woff2');
+  font-weight: 700;
+  font-style: normal;
+  font-display: swap;
+}
+
+:root {
+  /* ── 컬러 ───────────────────────────────────────────────────────────────
+     비율 규칙: 배경·화이트 80% / 퍼플 12% / 오렌지 5% 이하 / 기타 3% */
+  --c-purple:       #7C3AED;  /* 주색   — CTA, 링크, 섹션 타이틀 포인트, 아이콘 */
+  --c-purple-deep:  #5B21B6;  /* 진한 주색 — 버튼 hover, 강조 텍스트 */
+  --c-purple-tint:  #F3EEFF;  /* 배경 틴트 — 신뢰 섹션·인용 카드, 태그 */
+  --c-orange:       #F97316;  /* 액센트 — 숫자, 게임 요소 배지, 형광펜 밑줄 */
+  --c-ink:          #211A33;  /* 본문   — 제목·본문 텍스트 */
+  --c-ink-soft:     #6B6480;  /* 보조   — 서브 카피, 캡션 */
+  --c-bg:           #FCFAFF;  /* 배경   — 페이지 기본 */
+  --c-surface:      #FFFFFF;  /* 카드 배경 */
+  --c-line:         #EAE4F5;  /* 구분선·테두리 */
+
+  /* 파생값 (투명도 변주 — 새 색이 아니다) */
+  --c-purple-a08:   rgba(124, 58, 237, 0.08);
+  --c-purple-a12:   rgba(124, 58, 237, 0.12);
+  --c-orange-a40:   rgba(249, 115, 22, 0.40);  /* 형광펜 밑줄 전용 */
+
+  /* ── 타이포그래피 ───────────────────────────────────────────────────────
+     모바일 우선. 데스크톱 값은 미디어쿼리에서 덮어쓴다. */
+  --ff-head: 'Paperlogy', 'Gmarket Sans', 'Pretendard', 'Pretendard Variable',
+             -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo',
+             'Malgun Gothic', 'Noto Sans KR', system-ui, sans-serif;
+  --ff-body: 'Pretendard Variable', 'Pretendard',
+             -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo',
+             'Malgun Gothic', 'Noto Sans KR', system-ui, sans-serif;
+
+  --fs-hero:    28px;  /* 데스크톱 40px */
+  --fs-h2:      22px;  /* 데스크톱 28px */
+  --fs-h3:      18px;
+  --fs-body:    16px;  /* 데스크톱 17px */
+  --fs-caption: 14px;
+  --fs-stat:    26px;  /* 숫자 강조 = 본문 대비 1.5배 이상 (데스크톱 30px) */
+
+  --lh-body:  1.65;
+  --lh-head:  1.32;
+
+  --fw-regular: 400;
+  --fw-semi:    600;
+  --fw-bold:    700;
+
+  /* ── 간격 ───────────────────────────────────────────────────────────── */
+  --sp-section: 64px;   /* 데스크톱 96px */
+  --sp-gutter:  20px;   /* 데스크톱 24px */
+  --sp-1: 4px;
+  --sp-2: 8px;
+  --sp-3: 12px;
+  --sp-4: 16px;
+  --sp-5: 24px;
+  --sp-6: 32px;
+  --sp-7: 48px;
+
+  --w-max: 1120px;      /* 콘텐츠 최대 폭 */
+  --w-text: 720px;      /* 읽기 좋은 문단 폭 */
+
+  /* ── 형태 ───────────────────────────────────────────────────────────── */
+  --r-btn:  12px;
+  --r-card: 16px;
+  --r-pill: 999px;
+
+  /* 그림자는 아주 옅게 — 교사·원장 대상 페이지에서 과한 입체감은 신뢰를 깎는다 */
+  --sh-card:   0 1px 2px rgba(33, 26, 51, 0.04), 0 8px 24px rgba(33, 26, 51, 0.05);
+  --sh-btn:    0 4px 14px rgba(124, 58, 237, 0.28);
+  --sh-btn-hv: 0 6px 18px rgba(91, 33, 182, 0.34);
+  --sh-header: 0 1px 0 var(--c-line);
+
+  /* ── 모션 (과하지 않게) ─────────────────────────────────────────────── */
+  --t-fast: 140ms ease;
+  --t-base: 220ms ease;
+
+  --z-header: 100;
+  --z-mobilecta: 90;
+}
+
+@media (min-width: 768px) {
+  :root {
+    --fs-hero: 40px;
+    --fs-h2: 28px;
+    --fs-h3: 20px;
+    --fs-body: 17px;
+    --fs-stat: 30px;
+    --sp-section: 96px;
+    --sp-gutter: 24px;
+  }
+}
+
+/* 모션 최소화 선호 존중 */
+@media (prefers-reduced-motion: reduce) {
+  :root {
+    --t-fast: 1ms;
+    --t-base: 1ms;
+  }
+}

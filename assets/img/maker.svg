@@ -1,0 +1,12 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 96 96" width="96" height="96" role="img" aria-label="제작자 일러스트">
+  <!-- 스톡 사진 대신 브랜드 컬러의 단순 일러스트. 실제 사진이 준비되면 교체하세요. -->
+  <circle cx="48" cy="48" r="48" fill="#F3EEFF"/>
+  <circle cx="48" cy="40" r="16" fill="#7C3AED"/>
+  <path d="M48 60c15 0 27 9 30 22H18c3-13 15-22 30-22Z" fill="#5B21B6"/>
+  <path d="M34 34c2-9 8-14 14-14s12 5 14 14c-9-4-19-4-28 0Z" fill="#211A33"/>
+  <circle cx="42" cy="41" r="2.6" fill="#fff"/>
+  <circle cx="54" cy="41" r="2.6" fill="#fff"/>
+  <path d="M43 48c3 2.5 7 2.5 10 0" stroke="#fff" stroke-width="2.2" stroke-linecap="round" fill="none"/>
+  <circle cx="76" cy="72" r="12" fill="#F97316"/>
+  <path d="M71 72l3.5 3.5L81 69" stroke="#fff" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" fill="none"/>
+</svg>

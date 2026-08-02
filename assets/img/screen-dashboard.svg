@@ -1,0 +1,94 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 440 900" width="440" height="900" role="img" aria-label="선생님 대시보드 화면 — 반 학습 현황, 정답률, 최다 오답 단어">
+  <!-- ※ 자리표시자입니다. 실제 앱 스크린샷(PNG/WebP)으로 교체하세요. -->
+  <defs>
+    <clipPath id="t-screen"><rect width="440" height="900" rx="20"/></clipPath>
+    <style>
+      .t { font-family: Pretendard, system-ui, -apple-system, 'Malgun Gothic', 'Noto Sans KR', sans-serif; }
+    </style>
+  </defs>
+
+  <g clip-path="url(#t-screen)">
+    <rect width="440" height="900" fill="#FCFAFF"/>
+
+    <text class="t" x="30" y="40" fill="#6B6480" font-size="16" font-weight="600">9:41</text>
+    <rect x="372" y="27" width="30" height="14" rx="4" fill="#6B6480" opacity=".4"/>
+
+    <!-- 헤더 -->
+    <text class="t" x="24" y="90" fill="#6B6480" font-size="14" font-weight="600">선생님 대시보드</text>
+    <text class="t" x="24" y="120" fill="#211A33" font-size="24" font-weight="700">3학년 2반</text>
+    <rect x="316" y="96" width="100" height="32" rx="16" fill="#F3EEFF"/>
+    <text class="t" x="366" y="117" fill="#7C3AED" font-size="14" font-weight="700" text-anchor="middle">12주차 숙제</text>
+
+    <!-- 요약 카드 2개 -->
+    <rect x="24" y="146" width="190" height="104" rx="16" fill="#fff" stroke="#EAE4F5"/>
+    <text class="t" x="44" y="176" fill="#6B6480" font-size="13" font-weight="600">완료한 학생</text>
+    <text class="t" x="44" y="216" fill="#211A33" font-size="30" font-weight="700">22<tspan font-size="16" fill="#6B6480"> / 28</tspan></text>
+    <rect x="44" y="228" width="150" height="6" rx="3" fill="#EAE4F5"/>
+    <rect x="44" y="228" width="118" height="6" rx="3" fill="#7C3AED"/>
+
+    <rect x="226" y="146" width="190" height="104" rx="16" fill="#fff" stroke="#EAE4F5"/>
+    <text class="t" x="246" y="176" fill="#6B6480" font-size="13" font-weight="600">평균 정답률</text>
+    <text class="t" x="246" y="216" fill="#211A33" font-size="30" font-weight="700">84<tspan font-size="18">%</tspan></text>
+    <text class="t" x="246" y="238" fill="#22C55E" font-size="13" font-weight="700">▲ 지난주 대비 6%p</text>
+
+    <!-- 공동보스 -->
+    <rect x="24" y="266" width="392" height="92" rx="16" fill="#fff" stroke="#EAE4F5"/>
+    <rect x="44" y="284" width="66" height="22" rx="11" fill="#F97316"/>
+    <text class="t" x="77" y="300" fill="#fff" font-size="12" font-weight="700" text-anchor="middle">공동보스</text>
+    <text class="t" x="120" y="300" fill="#211A33" font-size="15" font-weight="700">우리 반 협동 이벤트</text>
+    <rect x="44" y="318" width="352" height="12" rx="6" fill="#EAE4F5"/>
+    <rect x="44" y="318" width="243" height="12" rx="6" fill="#F97316"/>
+    <text class="t" x="44" y="348" fill="#6B6480" font-size="13">보스 체력 31% 남음 · 오늘 참여 19명</text>
+
+    <!-- 학생 목록 -->
+    <text class="t" x="24" y="396" fill="#211A33" font-size="17" font-weight="700">학생별 현황</text>
+    <text class="t" x="416" y="396" fill="#7C3AED" font-size="13" font-weight="600" text-anchor="end">전체 보기</text>
+
+    <g class="t" font-size="15">
+      <rect x="24" y="410" width="392" height="52" rx="12" fill="#fff" stroke="#EAE4F5"/>
+      <circle cx="52" cy="436" r="6" fill="#22C55E"/>
+      <text x="74" y="442" fill="#211A33" font-weight="600">김○○</text>
+      <text x="396" y="442" fill="#6B6480" text-anchor="end">20/20 · 95%</text>
+
+      <rect x="24" y="470" width="392" height="52" rx="12" fill="#fff" stroke="#EAE4F5"/>
+      <circle cx="52" cy="496" r="6" fill="#22C55E"/>
+      <text x="74" y="502" fill="#211A33" font-weight="600">이○○</text>
+      <text x="396" y="502" fill="#6B6480" text-anchor="end">20/20 · 88%</text>
+
+      <rect x="24" y="530" width="392" height="52" rx="12" fill="#fff" stroke="#EAE4F5"/>
+      <circle cx="52" cy="556" r="6" fill="#F97316"/>
+      <text x="74" y="562" fill="#211A33" font-weight="600">박○○</text>
+      <text x="396" y="562" fill="#6B6480" text-anchor="end">12/20 · 71%</text>
+
+      <rect x="24" y="590" width="392" height="52" rx="12" fill="#fff" stroke="#EAE4F5"/>
+      <circle cx="52" cy="616" r="6" fill="#CFC4E6"/>
+      <text x="74" y="622" fill="#211A33" font-weight="600">최○○</text>
+      <text x="396" y="622" fill="#9A93AC" text-anchor="end">미시작</text>
+    </g>
+
+    <!-- 최다 오답 -->
+    <text class="t" x="24" y="686" fill="#211A33" font-size="17" font-weight="700">우리 반 최다 오답 TOP 10</text>
+    <rect x="24" y="700" width="392" height="164" rx="16" fill="#fff" stroke="#EAE4F5"/>
+    <g class="t" font-size="15">
+      <text x="46" y="734" fill="#7C3AED" font-weight="700">1</text>
+      <text x="72" y="734" fill="#211A33" font-weight="600">abandon</text>
+      <text x="200" y="734" fill="#6B6480" font-size="14">버리다</text>
+      <text x="396" y="734" fill="#6B6480" font-size="14" text-anchor="end">18명 오답</text>
+
+      <text x="46" y="770" fill="#7C3AED" font-weight="700">2</text>
+      <text x="72" y="770" fill="#211A33" font-weight="600">reluctant</text>
+      <text x="200" y="770" fill="#6B6480" font-size="14">꺼리는</text>
+      <text x="396" y="770" fill="#6B6480" font-size="14" text-anchor="end">15명 오답</text>
+
+      <text x="46" y="806" fill="#7C3AED" font-weight="700">3</text>
+      <text x="72" y="806" fill="#211A33" font-weight="600">sustain</text>
+      <text x="200" y="806" fill="#6B6480" font-size="14">지속하다</text>
+      <text x="396" y="806" fill="#6B6480" font-size="14" text-anchor="end">13명 오답</text>
+
+      <text x="46" y="842" fill="#7C3AED" font-weight="700">4</text>
+      <text x="72" y="842" fill="#211A33" font-weight="600">deliberate</text>
+      <text x="200" y="842" fill="#6B6480" font-size="14">신중한</text>
+      <text x="396" y="842" fill="#6B6480" font-size="14" text-anchor="end">11명 오답</text>
+    </g>
+  </g>
+</svg>

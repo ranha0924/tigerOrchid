@@ -1,0 +1,79 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+<meta charset="utf-8">
+<title>OG image source — 1200×630</title>
+<link rel="stylesheet" href="https://cdn.jsdelivr.net/gh/orioncactus/pretendard@v1.3.9/dist/web/static/pretendard-dynamic-subset.css">
+<style>
+  * { box-sizing: border-box; margin: 0; }
+  html, body { width: 1200px; height: 630px; overflow: hidden; }
+  body {
+    display: flex; align-items: center; gap: 56px;
+    padding: 0 64px;
+    background: #5B21B6;
+    font-family: 'Pretendard Variable', Pretendard, 'Apple SD Gothic Neo',
+                 'Malgun Gothic', 'Noto Sans KR', system-ui, sans-serif;
+    color: #fff;
+    position: relative;
+  }
+  /* 난초 보라의 은은한 광 */
+  body::before {
+    content: ""; position: absolute; inset: 0;
+    background: radial-gradient(760px 460px at 18% 32%, rgba(124,58,237,.85), transparent 70%);
+  }
+  .col { position: relative; z-index: 1; }
+  .left { flex: 0 0 588px; }
+  .brand {
+    display: inline-flex; align-items: center; gap: 12px;
+    font-size: 22px; font-weight: 700; letter-spacing: .04em;
+    opacity: .92;
+  }
+  .brand svg { width: 34px; height: 34px; }
+  /* 48px + 588px 컬럼 = 한글 폴백 폰트(전각)로도 "아이들이 하고 싶어하게"가 한 줄에 들어간다 */
+  h1 {
+    margin-top: 26px;
+    font-size: 48px; line-height: 1.3; font-weight: 800; letter-spacing: -.035em;
+    white-space: nowrap;
+  }
+  /* 인라인 background 로 칠한다 — z-index:-1 가상요소는 부모 배경 뒤로 사라진다 */
+  .hl {
+    display: inline; padding: 0 4px; border-radius: 3px;
+    background-image: linear-gradient(to top,
+      rgba(249,115,22,.75) .34em, transparent .34em);
+    box-decoration-break: clone;
+    -webkit-box-decoration-break: clone;
+  }
+  .sub { margin-top: 28px; font-size: 24px; line-height: 1.5; color: #E6DDFB; font-weight: 500; }
+  .sub b { color: #FDBA74; font-weight: 800; }
+
+  .right { flex: 1; position: relative; height: 630px; }
+  .shot {
+    position: absolute; border-radius: 22px; overflow: hidden;
+    background: #14101F; padding: 7px;
+    box-shadow: 0 26px 60px rgba(0,0,0,.42);
+  }
+  .shot img { display: block; width: 100%; border-radius: 16px; }
+  .shot--back  { width: 224px; top: 96px;  left: 4px;   transform: rotate(-5deg); }
+  .shot--front { width: 244px; top: 136px; left: 216px; transform: rotate(4deg); }
+</style>
+</head>
+<body>
+  <div class="col left">
+    <span class="brand">
+      <svg viewBox="0 0 32 32" fill="none" aria-hidden="true">
+        <rect width="32" height="32" rx="8" fill="#fff"/>
+        <path d="M16 7.5c2.6 1.9 4 4.4 4 7.2 0 2.6-1.6 4.6-4 4.6s-4-2-4-4.6c0-2.8 1.4-5.3 4-7.2Z" fill="#7C3AED"/>
+        <path d="M16 20.4c1.6 1.4 4 2.1 6.4 1.8-1.2 2.2-3.7 3.6-6.4 3.6s-5.2-1.4-6.4-3.6c2.4.3 4.8-.4 6.4-1.8Z" fill="#F97316"/>
+      </svg>
+      WORD QUEST
+    </span>
+    <h1>단어 숙제를,<br>아이들이 <span class="hl">하고 싶어하게</span></h1>
+    <p class="sub">학생 <b>110명</b> 설문에서 <b>69%</b>가<br>‘기존 암기 방식보다 낫다’고 답했습니다.</p>
+  </div>
+
+  <div class="col right">
+    <div class="shot shot--back"><img src="../assets/img/screen-battle.svg" alt=""></div>
+    <div class="shot shot--front"><img src="../assets/img/screen-dashboard.svg" alt=""></div>
+  </div>
+</body>
+</html>
