@@ -5,8 +5,6 @@
 (function () {
   'use strict';
 
-  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-
   /* ────────────────────────────────────────────────────────────────────────
      스크린샷 슬라이더 (데모 영상 완성 전까지의 자리)
      ──────────────────────────────────────────────────────────────────── */
@@ -19,16 +17,15 @@
     if (!track || slides.length < 2) return;
 
     var index = 0;
-    var timer = null;
-    var LABELS = ['학생 플레이 화면', '포획 / 도감', '선생님 대시보드'];
 
-    var dots = slides.map(function (_, i) {
+    var dots = slides.map(function (slide, i) {
       var b = document.createElement('button');
       b.type = 'button';
       b.className = 'slider__dot';
       b.setAttribute('role', 'tab');
-      b.setAttribute('aria-label', LABELS[i] || (i + 1) + '번째 화면');
-      b.addEventListener('click', function () { go(i, true); });
+      b.setAttribute('aria-label', slide.getAttribute('aria-label') || (i + 1) + '번째 화면');
+      if (slide.id) b.setAttribute('aria-controls', slide.id);
+      b.addEventListener('click', function () { go(i); });
       dotsEl.appendChild(b);
       return b;
     });
@@ -47,48 +44,35 @@
       });
     }
 
-    function go(i, stop) {
+    function go(i) {
       index = (i + slides.length) % slides.length;
       render();
-      if (stop) pause();
     }
 
-    function play() {
-      if (reduceMotion || timer) return;
-      timer = setInterval(function () { go(index + 1); }, 6000);
-    }
-    function pause() {
-      if (timer) { clearInterval(timer); timer = null; }
-    }
+    /* 자동 넘김은 두지 않는다.
+       스펙의 "애니메이션 과다 금지"에 맞고, 자동 전환이 없으면
+       WCAG 2.2.2(정지 수단 제공) 대상 자체가 되지 않는다.
+       화면은 방문자가 원할 때만 넘어간다. */
 
-    prev && prev.addEventListener('click', function () { go(index - 1, true); });
-    next && next.addEventListener('click', function () { go(index + 1, true); });
+    prev && prev.addEventListener('click', function () { go(index - 1); });
+    next && next.addEventListener('click', function () { go(index + 1); });
 
     root.addEventListener('keydown', function (e) {
-      if (e.key === 'ArrowLeft')  { go(index - 1, true); }
-      if (e.key === 'ArrowRight') { go(index + 1, true); }
+      if (e.key === 'ArrowLeft')  { go(index - 1); }
+      if (e.key === 'ArrowRight') { go(index + 1); }
     });
-
-    root.addEventListener('mouseenter', pause);
-    root.addEventListener('mouseleave', play);
-    root.addEventListener('focusin', pause);
 
     // 스와이프
     var x0 = null;
-    root.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; pause(); }, { passive: true });
+    root.addEventListener('touchstart', function (e) { x0 = e.touches[0].clientX; }, { passive: true });
     root.addEventListener('touchend', function (e) {
       if (x0 === null) return;
       var dx = e.changedTouches[0].clientX - x0;
-      if (Math.abs(dx) > 40) go(index + (dx < 0 ? 1 : -1), true);
+      if (Math.abs(dx) > 40) go(index + (dx < 0 ? 1 : -1));
       x0 = null;
     }, { passive: true });
 
-    document.addEventListener('visibilitychange', function () {
-      document.hidden ? pause() : play();
-    });
-
     render();
-    play();
   }
 
   document.querySelectorAll('[data-slider]').forEach(initSlider);
@@ -252,15 +236,52 @@
     });
   }
 
-  /* 폴백 — 메일 클라이언트로 넘긴다 */
+  /* 폴백 — 메일 클라이언트로 넘긴다.
+     메일 핸들러가 없는 PC 에서는 아무 일도 일어나지 않는데 브라우저는 그 사실을
+     알려주지 않는다. 그래서 "보냈습니다"라고 말하지 않고, 작성한 내용을 화면에
+     그대로 꺼내 복사할 수 있게 한다. 문의가 조용히 사라지는 게 최악이다. */
   function sendMailto(v) {
     var m = cfg.mailto || { to: 'ranha.projects@gmail.com', subject: 'WORD QUEST 도입 문의' };
     var url = 'mailto:' + m.to
       + '?subject=' + encodeURIComponent(m.subject + ' — ' + v.org)
       + '&body=' + encodeURIComponent(bodyText(v));
+    showFallback(v, m.to);
     window.location.href = url;
     return Promise.resolve();
   }
+
+  var fallback     = form.querySelector('[data-fallback]');
+  var fallbackBody = form.querySelector('[data-fallback-body]');
+  var fallbackCopy = form.querySelector('[data-fallback-copy]');
+
+  function showFallback(v, to) {
+    if (!fallback || !fallbackBody) return;
+    fallbackBody.textContent = bodyText(v);
+    fallback.hidden = false;
+    var link = fallback.querySelector('[data-fallback-mail]');
+    if (link && to) { link.href = 'mailto:' + to; link.textContent = to; }
+  }
+
+  fallbackCopy && fallbackCopy.addEventListener('click', function () {
+    var text = fallbackBody.textContent;
+    var done = function () {
+      fallbackCopy.textContent = '복사했습니다';
+      setTimeout(function () { fallbackCopy.textContent = '내용 복사하기'; }, 2000);
+    };
+    if (navigator.clipboard && navigator.clipboard.writeText) {
+      navigator.clipboard.writeText(text).then(done, selectInstead);
+    } else {
+      selectInstead();
+    }
+    function selectInstead() {
+      var range = document.createRange();
+      range.selectNodeContents(fallbackBody);
+      var sel = window.getSelection();
+      sel.removeAllRanges();
+      sel.addRange(range);
+      fallbackCopy.textContent = '선택했습니다 — Ctrl/⌘+C 로 복사하세요';
+    }
+  });
 
   form.addEventListener('submit', function (e) {
     e.preventDefault();
@@ -284,15 +305,19 @@
 
     task.then(function () {
       if (mode === 'mailto') {
-        say('메일 앱이 열렸습니다. 그대로 보내주시면 제작자가 직접 연락드립니다.', 'ok');
+        // "보냈다"고 단정하지 않는다 — 메일 앱이 안 열렸을 수 있다
+        say('메일 앱을 열었습니다. 창이 뜨지 않았다면 아래 내용을 복사해 보내주세요.', 'ok');
         submit.disabled = false;
         return;
       }
-      form.reset();
-      say('문의가 접수되었습니다. 제작자가 직접 연락드리겠습니다.', 'ok');
-      submit.disabled = false;
+      // 구글 폼은 응답을 읽을 수 없어 실패를 감지하지 못한다.
+      // 입력값을 지우지 않고 남겨서, 접수가 안 됐을 때 다시 보낼 수 있게 한다.
+      submit.disabled = true;
+      submit.textContent = '문의를 보냈습니다';
+      say('문의가 접수되었습니다. 제작자가 직접 연락드리겠습니다. 며칠 내 연락이 없으면 ranha.projects@gmail.com 으로 다시 보내주세요.', 'ok');
     }).catch(function () {
-      say('전송에 실패했습니다. ranha.projects@gmail.com 으로 보내주시면 바로 확인하겠습니다.', 'err');
+      say('전송에 실패했습니다. 아래 내용을 복사해 ranha.projects@gmail.com 으로 보내주시면 바로 확인하겠습니다.', 'err');
+      showFallback(v, (cfg.mailto && cfg.mailto.to) || 'ranha.projects@gmail.com');
       submit.disabled = false;
     });
   });

@@ -77,20 +77,48 @@ const COPY = [
   ['10. 인스타',           '@r.xanha']
 ];
 const missing = COPY.filter(([, s]) => !has(s));
-check('A', 12, `스펙 카피 ${COPY.length}개 문자열 일치`, missing.length === 0,
+check('A', 10, `스펙 카피 ${COPY.length}개 문자열 일치`, missing.length === 0,
       missing.length ? `누락: ${missing.map(([k]) => k).join(', ')}` : '');
 
 const h1 = (html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/) || [])[1] || '';
-check('A', 4, 'H1 = 히어로 헤드라인', norm(h1) === norm('단어 숙제를, 아이들이 하고 싶어하게'), norm(h1));
-check('A', 4, '헤드라인(H1)에 "게임" 미노출 (톤 규칙)', !h1.includes('게임'));
+check('A', 3, 'H1 = 히어로 헤드라인', norm(h1) === norm('단어 숙제를, 아이들이 하고 싶어하게'), norm(h1));
+check('A', 3, '헤드라인(H1)에 "게임" 미노출 (톤 규칙)', !h1.includes('게임'));
 
 const footerHtml = (html.match(/<footer class="site-footer"[\s\S]*?<\/footer>/) || [''])[0];
 const bodyBeforeFooter = html.slice(0, html.indexOf('<footer class="site-footer"'));
-check('A', 3, '학생 앱 링크는 푸터에만',
-      footerHtml.includes('학생용 앱') && !bodyBeforeFooter.includes('학생용 앱'));
+check('A', 2, '학생 앱 링크가 푸터 위로 올라오지 않음', !bodyBeforeFooter.includes('학생용 앱'));
 
 const sectionCount = (html.match(/<section\b/g) || []).length;
-check('A', 2, `섹션 9개 + 푸터 (총 10 블록)`, sectionCount >= 9 && /<footer/.test(html), `section ${sectionCount}개`);
+check('A', 1, `섹션 9개 + 푸터 (총 10 블록)`, sectionCount >= 9 && /<footer/.test(html), `section ${sectionCount}개`);
+
+/* 게임 아트는 3번(해결)·6번(학생들의 말) 섹션에만.
+   페이지 상단은 어른의 신뢰 영역 — 히어로에 몬스터가 나오면 안 된다. */
+const GAME_ART = ['screen-battle', 'screen-dex', 'monsters.svg'];
+const sections = [...html.matchAll(/<section[\s\S]*?<\/section>/g)].map((m) => m[0]);
+const gameArtOutside = sections
+  .filter((s) => GAME_ART.some((a) => s.includes(a)))
+  .filter((s) => !/id="solution-title"|id="voices-title"/.test(s))
+  .map((s) => (s.match(/aria-labelledby="([^"]+)"/) || [, s.match(/id="([^"]+)"/)?.[1] || '히어로'])[1]);
+check('A', 3, '몬스터·게임 아트는 3번·6번 섹션에만 (상단은 신뢰 영역)',
+      gameArtOutside.length === 0,
+      gameArtOutside.length ? `밖에서 발견: ${gameArtOutside.join(', ')}` : '');
+
+/* 그려낸 자리표시자를 실제 화면이라고 말하면 안 된다 */
+const usesPlaceholder = /screen-(battle|dex|dashboard|setup)\.svg/.test(html);
+const tagCount = (html.match(/phone__tag/g) || []).length;
+const phoneCount = (html.match(/class="phone"/g) || []).length;
+check('A', 2, '자리표시자 화면에 "예시" 표기 + "실제 화면" 문구 없음',
+      !usesPlaceholder || (tagCount === phoneCount && tagCount > 0 && !/실제 화면/.test(plain)),
+      usesPlaceholder ? `목업 ${phoneCount}개 중 예시배지 ${tagCount}개` : '실제 캡처 사용 중');
+
+/* 근거 없는 외부 URL 을 넣어두면 안 된다 */
+const outboundLinks = [...html.matchAll(/href="(https?:\/\/[^"]+)"/g)].map((m) => m[1]);
+const ALLOWED_HOSTS = ['cdn.jsdelivr.net', 'www.instagram.com', 'ranha0924.github.io',
+                       'schema.org', 'www.youtube-nocookie.com'];
+const unknownHosts = outboundLinks
+  .map((u) => { try { return new URL(u).host; } catch { return u; } })
+  .filter((h) => !ALLOWED_HOSTS.includes(h));
+check('A', 1, '확인되지 않은 외부 도메인 링크 없음', unknownHosts.length === 0, unknownHosts.join(', '));
 
 /* ══ B. 디자인 시스템 (25) ══════════════════════════════════════════════ */
 const PALETTE = {
@@ -121,14 +149,14 @@ check('B', 2, '섹션 패딩 96px (모바일 64px)',
       /--sp-section:\s*64px/.test(tokens) && /--sp-section:\s*96px/.test(tokens));
 
 const whiteSections = (html.match(/section--white/g) || []).length;
-check('B', 2, '배경 오프화이트 ↔ 화이트 교차', whiteSections >= 3, `section--white ${whiteSections}개`);
+check('B', 1, '배경 오프화이트 ↔ 화이트 교차', whiteSections >= 3, `section--white ${whiteSections}개`);
 
 const hlCount = (html.match(/class="hl"/g) || []).length;
 check('B', 2, '형광펜 밑줄은 히어로 한 곳만', hlCount === 1, `.hl ${hlCount}개`);
 
 const orchidCount = (html.match(/contact__orchid/g) || []).length;
 const orchidInContact = /id="contact"[\s\S]{0,900}contact__orchid/.test(html);
-check('B', 3, '난초 라인 드로잉은 문의 섹션 하나만', orchidCount === 1 && orchidInContact);
+check('B', 2, '난초 라인 드로잉은 문의 섹션 하나만', orchidCount === 1 && orchidInContact);
 
 check('B', 1, '헤드라인 폰트 Paperlogy + 본문 Pretendard',
       /Paperlogy/.test(tokens) && /Pretendard/.test(tokens) && /pretendard/i.test(html));
@@ -147,16 +175,22 @@ const contrasts = [
   ['퍼플 링크 on 화이트',   ratio('#7C3AED', '#FFFFFF'), 4.5],
   ['화이트 on 퍼플버튼',    ratio('#FFFFFF', '#7C3AED'), 4.5],
   ['잉크 on 라이트오키드',  ratio('#211A33', '#F3EEFF'), 4.5],
-  ['그레이퍼플 on 오프화이트', ratio('#6B6480', '#FCFAFF'), 4.5]
+  ['그레이퍼플 on 오프화이트', ratio('#6B6480', '#FCFAFF'), 4.5],
+  // 오렌지 숫자(.stat)는 24px+ 볼드 = "큰 텍스트" → 3:1 기준
+  ['오렌지숫자 on 화이트 (큰텍스트)', ratio('#EA580C', '#FFFFFF'), 3.0],
+  // 배지: 오렌지 배경 위 잉크 글자
+  ['잉크 on 오렌지배지',    ratio('#211A33', '#F97316'), 4.5],
+  ['플레이스홀더 on 오프화이트', ratio('#75708A', '#FCFAFF'), 4.5]
 ];
 const badContrast = contrasts.filter(([, r, min]) => r < min);
 check('C', 5, '본문·버튼 대비 4.5:1 이상', badContrast.length === 0,
       contrasts.map(([n, r]) => `${n} ${r.toFixed(2)}`).join(' · '));
 
 // 오렌지는 작은 본문 텍스트 색으로 쓰지 않는다 → color:var(--c-orange) 는 .stat / 인용 따옴표만
-const orangeTextRules = [...style.matchAll(/([^{}]+)\{([^}]*color:\s*var\(--c-orange\)[^}]*)\}/g)]
+const orangeTextRules = [...style.matchAll(/([^{}]+)\{([^}]*color:\s*var\(--c-orange(-text)?\)[^}]*)\}/g)]
   .map((m) => m[1].trim());
-const allowedOrangeText = orangeTextRules.every((sel) => /\.stat|\.quote::before|\.slider|\.contact__orchid/.test(sel));
+// 오렌지를 글자색으로 쓸 수 있는 곳: 24px+ 볼드 숫자(.stat), 큰따옴표 장식뿐
+const allowedOrangeText = orangeTextRules.every((sel) => /\.stat|\.quote::before/.test(sel));
 check('C', 3, '오렌지를 작은 본문 텍스트 색으로 미사용', allowedOrangeText,
       orangeTextRules.join(' | ') || '(없음)');
 
@@ -224,6 +258,7 @@ if (!STATIC_ONLY) {
   // 외부 폰트 CDN 차단 같은 네트워크 잡음은 코드 결함이 아니다 — 걸러낸다
   const isNetworkNoise = (t) => /net::|ERR_|Failed to load resource|cdn\.jsdelivr\.net/i.test(t);
   const VIEWPORTS = [
+    { name: '최소폭',    width: 320, height: 720 },
     { name: 'iPhone SE', width: 360, height: 740 },
     { name: 'iPhone 14', width: 390, height: 844 },
     { name: 'iPad',      width: 768, height: 1024 },
@@ -295,28 +330,57 @@ if (!STATIC_ONLY) {
   const sliderOk = await page.evaluate(() =>
     document.querySelector('[data-slider-track]').style.transform.includes('-100%'));
   await page.close();
+
+  // 섹션 타이틀이 전부 같은 스케일인가 — 하나만 h3 크기로 새면 위계가 무너진다
+  const h2sizes = await (async () => {
+    const pg = await browser.newPage({ viewport: { width: 1280, height: 900 } });
+    await pg.goto(url, { waitUntil: 'load' });
+    const r = await pg.evaluate(() => {
+      const out = {};
+      document.querySelectorAll('main section h2').forEach((h) => {
+        out[h.id || h.textContent.trim().slice(0, 12)] = parseFloat(getComputedStyle(h).fontSize);
+      });
+      // 블롭이 폰 뒤에 완전히 가려지지 않았는지 — 스펙이 요구한 배경 장식이 보여야 한다
+      const shot = document.querySelector('.shot');
+      const phone = shot && shot.querySelector('.phone');
+      const blob = shot && getComputedStyle(shot, '::before');
+      const blobW = blob ? parseFloat(blob.width) : 0;
+      const phoneW = phone ? phone.getBoundingClientRect().width : 0;
+      return { sizes: out, blobW, phoneW };
+    });
+    await pg.close();
+    return r;
+  })();
+  const sizeVals = Object.values(h2sizes.sizes);
+  const uniform = sizeVals.length > 0 && new Set(sizeVals).size === 1;
   await browser.close();
 
   live.ran = true;
-  check('D', 6, '5개 뷰포트 가로 스크롤 없음', overflow.length === 0, overflow.join(' | '));
+  check('D', 6, '6개 뷰포트(320~1440) 가로 스크롤 없음', overflow.length === 0, overflow.join(' | '));
   check('D', 4, '터치 타깃 44px 이상', smallTargets.length === 0, smallTargets.join(' | '));
-  check('D', 5, '모바일 우선 렌더 정상 (360~1440)', true, '스크린샷: .verify/view-*.png');
+  check('D', 5, '모바일 우선 렌더 정상 (320~1440)', true, '스크린샷: .verify/view-*.png');
   check('E', 3, 'JS 오류 0', errors.length === 0, errors.slice(0, 3).join(' | '));
   check('E', 2, '폼 필수값 검증 + 슬라이더 동작',
         formGuard.errs >= 3 && formGuard.status.length > 0 && sliderOk,
         `에러표시 ${formGuard.errs}개 · 슬라이더 ${sliderOk ? 'OK' : 'NG'}`);
   check('B', 1, '형광펜 밑줄이 실제로 칠해짐 (부모 배경 뒤로 사라지지 않음)', hlPainted);
 
+  check('B', 2, '섹션 타이틀 스케일 균일 (28px)', uniform && sizeVals[0] === 28,
+        Object.entries(h2sizes.sizes).map(([k, v]) => `${k} ${v}px`).join(' · '));
+  check('B', 1, '라이트 오키드 블롭이 폰 뒤로 보임',
+        h2sizes.blobW > h2sizes.phoneW + 20,
+        `블롭 ${h2sizes.blobW}px vs 폰 ${Math.round(h2sizes.phoneW)}px`);
+
   if (ratioReport) {
     const { purple, orange, light, other } = ratioReport;
-    check('B', 3, '컬러 비율 실측 (밝은 배경 ≥70% · 퍼플계 4~25% · 오렌지 0초과 5이하)',
+    check('B', 2, '컬러 비율 실측 (밝은 배경 ≥70% · 퍼플계 4~25% · 오렌지 0초과 5이하)',
           light >= 70 && purple >= 4 && purple <= 25 && orange > 0 && orange <= 5,
           `밝은배경 ${light}% · 퍼플계 ${purple}% · 오렌지 ${orange}% · 기타(스크린샷 등) ${other}%`);
   }
 } else {
   check('D', 15, '반응형 (라이브 검사 생략)', false, '--static 모드');
   check('E', 5, '라이브 기술 검사 생략', false, '--static 모드');
-  check('B', 3, '컬러 비율 (라이브 검사 생략)', false, '--static 모드');
+  check('B', 6, '컬러 비율 · 타이틀 스케일 · 블롭 (라이브 검사 생략)', false, '--static 모드');
 }
 
 /* ── 전체 페이지 스크린샷의 실제 픽셀로 "비율 규칙"을 잰다 ──────────────

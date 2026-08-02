@@ -172,9 +172,16 @@ h3 { font-size: var(--fs-h3); }
 .hero__cta .btn { flex: 1 1 220px; }
 .hero__note { margin-top: var(--sp-4); font-size: var(--fs-caption); color: var(--c-ink-soft); }
 
+/* 문장 안에 섞인 숫자(히어로의 110명·69%)
+   오렌지를 쓰지 않는다 — 본문 크기(16/17px)는 "큰 텍스트"가 아니라서
+   오렌지로는 대비 4.5:1 을 만들 수 없다. 스펙이 "오렌지를 작은 본문 텍스트
+   색으로 쓰지 말라"고 한 바로 그 경우다. 굵기로만 강조한다.
+   오렌지 숫자 강조(.stat)는 24px 이상인 신뢰 섹션에서만 쓴다. */
+.num { color: var(--c-ink); font-weight: var(--fw-bold); }
+
 /* 숫자 강조 — 오렌지 볼드, 본문보다 1.5배 */
 .stat {
-  color: var(--c-orange);
+  color: var(--c-orange-text);
   font-weight: var(--fw-bold);
   font-size: var(--fs-stat);
   line-height: 1.1;
@@ -197,6 +204,14 @@ h3 { font-size: var(--fs-h3); }
   margin-bottom: var(--sp-3);
 }
 .demo__dot { width: 8px; height: 8px; border-radius: 50%; background: var(--c-purple); flex: none; }
+.demo__disclaimer,
+.shots__disclaimer {
+  margin-top: var(--sp-4);
+  font-size: var(--fs-caption);
+  color: var(--c-ink-soft);
+  text-align: center;
+}
+.shots__disclaimer { margin-top: var(--sp-3); }
 
 .slider { position: relative; }
 .slider__viewport { position: relative; overflow: hidden; border-radius: 12px; }
@@ -235,7 +250,7 @@ h3 { font-size: var(--fs-h3); }
   width: 100%;
   max-width: 232px;
   border-radius: 26px;
-  background: #14101F;
+  background: var(--c-device);
   padding: 8px;
   box-shadow: 0 10px 30px rgba(33, 26, 51, 0.16);
 }
@@ -244,6 +259,18 @@ h3 { font-size: var(--fs-h3); }
   position: absolute; top: 14px; left: 50%; transform: translateX(-50%);
   width: 56px; height: 5px; border-radius: var(--r-pill);
   background: rgba(255, 255, 255, 0.28);
+}
+/* 실제 캡처가 아닌 예시 이미지임을 화면에서 분명히 밝힌다 —
+   신뢰로 파는 페이지에서 그려낸 화면을 실제라고 두면 안 된다.
+   실제 스크린샷으로 교체할 때 이 배지를 함께 지운다. */
+.phone__tag {
+  position: absolute; z-index: 2;
+  top: -10px; right: -8px;
+  padding: 4px 10px;
+  border-radius: var(--r-pill);
+  background: var(--c-ink); color: #fff;
+  font-size: 11px; font-weight: var(--fw-bold); letter-spacing: 0.02em;
+  white-space: nowrap;
 }
 .phone__screen {
   border-radius: 19px; overflow: hidden; background: #fff; display: block;
@@ -254,7 +281,7 @@ h3 { font-size: var(--fs-h3); }
 .empathy__quote {
   max-width: var(--w-text); margin-inline: auto;
   font-family: var(--ff-head); font-weight: var(--fw-bold);
-  font-size: calc(var(--fs-h2) - 1px);
+  font-size: var(--fs-h2);
   line-height: 1.5; letter-spacing: -0.02em;
   text-align: center;
 }
@@ -270,7 +297,7 @@ h3 { font-size: var(--fs-h3); }
 .shot::before {                       /* 라이트 오키드 블롭 */
   content: "";
   position: absolute; z-index: 0;
-  width: 210px; height: 210px; top: 6%; left: 50%;
+  width: 320px; height: 320px; top: -18px; left: 50%;
   transform: translateX(-50%);
   background: var(--c-purple-tint);
   border-radius: 46% 54% 58% 42% / 52% 46% 54% 48%;
@@ -293,7 +320,7 @@ h3 { font-size: var(--fs-h3); }
 }
 .solution__line {
   max-width: var(--w-text); margin: var(--sp-7) auto 0;
-  text-align: center; color: var(--c-ink-soft);
+  text-align: center; color: var(--c-ink);
 }
 
 /* ── 기능 카드 ─────────────────────────────────────────────────────────── */
@@ -308,14 +335,14 @@ h3 { font-size: var(--fs-h3); }
 }
 .card__icon { width: 32px; height: 32px; color: var(--c-purple); }
 .card__title { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
-.card p { color: var(--c-ink-soft); }
+.card p { color: var(--c-ink); }
 
 /* 게임 요소 배지 — 오렌지가 허용되는 몇 안 되는 자리 */
 .badge {
   display: inline-flex; align-items: center;
   padding: 3px 9px; border-radius: var(--r-pill);
   font-size: 12px; font-weight: var(--fw-bold); letter-spacing: 0.02em;
-  background: var(--c-orange); color: #fff;
+  background: var(--c-orange); color: var(--c-ink);
 }
 
 /* ── 신뢰 (숫자) ───────────────────────────────────────────────────────── */
@@ -327,11 +354,11 @@ h3 { font-size: var(--fs-h3); }
   padding: var(--sp-5);
 }
 .proof__stat { display: flex; align-items: baseline; gap: 8px; flex-wrap: wrap; }
-.proof__desc { margin-top: var(--sp-2); color: var(--c-ink-soft); }
+.proof__desc { margin-top: var(--sp-2); color: var(--c-ink); }
 .proof__headline {
   max-width: var(--w-text);
   font-family: var(--ff-head); font-weight: var(--fw-bold);
-  font-size: var(--fs-h3); line-height: 1.45;
+  font-size: var(--fs-h2); line-height: 1.4;
 }
 
 /* ── 학생들의 말 ───────────────────────────────────────────────────────── */
@@ -352,7 +379,7 @@ h3 { font-size: var(--fs-h3); }
 .quote p { font-weight: var(--fw-semi); }
 .quote footer { margin-top: auto; padding-top: var(--sp-3); font-size: var(--fs-caption); color: var(--c-ink-soft); }
 
-.voices__art { margin: var(--sp-6) auto 0; max-width: 320px; }
+.voices__art { margin: var(--sp-6) auto 0; max-width: min(320px, 100%); }
 
 /* ── 만든 사람 ─────────────────────────────────────────────────────────── */
 .maker {
@@ -381,7 +408,7 @@ h3 { font-size: var(--fs-h3); }
 .plan--highlight { border-color: var(--c-purple); box-shadow: 0 0 0 1px var(--c-purple), var(--sh-card); }
 .plan__name { font-size: var(--fs-caption); font-weight: var(--fw-bold); color: var(--c-purple); letter-spacing: 0.06em; }
 .plan__price { font-family: var(--ff-head); font-size: var(--fs-h2); font-weight: var(--fw-bold); }
-.plan p { color: var(--c-ink-soft); }
+.plan p { color: var(--c-ink); }
 
 /* ── 도입 문의 ─────────────────────────────────────────────────────────── */
 .contact { position: relative; overflow: hidden; background: var(--c-surface); }
@@ -421,14 +448,39 @@ h3 { font-size: var(--fs-h3); }
   outline: none; border-color: var(--c-purple);
   box-shadow: 0 0 0 3px var(--c-purple-a12);
 }
-.field input::placeholder, .field textarea::placeholder { color: #9A93AC; }
-.field--error input, .field--error textarea { border-color: #C2410C; }
-.field__error { font-size: var(--fs-caption); color: #C2410C; min-height: 0; }
+.field input::placeholder, .field textarea::placeholder { color: var(--c-placeholder); }
+/* 오류 표시가 포커스 링에 지지 않도록 :focus 상태까지 함께 지정한다 */
+.field--error input, .field--error textarea,
+.field--error input:focus, .field--error textarea:focus {
+  border-color: var(--c-danger);
+  box-shadow: 0 0 0 3px var(--c-danger-a15);
+}
+.field__error { font-size: var(--fs-caption); color: var(--c-danger); min-height: 0; }
 
 .form__note { font-size: var(--fs-caption); color: var(--c-ink-soft); }
 .form__status { font-size: var(--fs-caption); font-weight: var(--fw-semi); min-height: 1.2em; }
 .form__status[data-state="ok"]   { color: var(--c-purple-deep); }
-.form__status[data-state="err"]  { color: #C2410C; }
+.form__status[data-state="err"]  { color: var(--c-danger); }
+/* 전송 실패·메일앱 미실행 시 작성한 내용을 꺼내주는 자리 */
+.form__fallback {
+  display: grid; gap: var(--sp-3);
+  padding: var(--sp-4);
+  background: var(--c-purple-tint);
+  border-radius: var(--r-btn);
+  font-size: var(--fs-caption);
+}
+.form__fallback-body {
+  margin: 0; padding: var(--sp-3);
+  background: var(--c-surface);
+  border: 1px solid var(--c-line);
+  border-radius: 10px;
+  font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+  font-size: 13px; line-height: 1.6;
+  white-space: pre-wrap; word-break: break-word;
+  max-height: 220px; overflow: auto;
+}
+.form__fallback .btn { justify-self: start; }
+
 .contact__after { margin-top: var(--sp-4); font-size: var(--fs-caption); color: var(--c-ink-soft); }
 
 /* ── 푸터 ──────────────────────────────────────────────────────────────── */
@@ -474,7 +526,7 @@ h3 { font-size: var(--fs-h3); }
   .hero__grid { grid-template-columns: 1.05fr 0.95fr; gap: var(--sp-7); }
   .cards { grid-template-columns: repeat(4, 1fr); }
   .shots { grid-template-columns: repeat(3, 1fr); gap: var(--sp-5); }
-  .shot::before { width: 240px; height: 240px; }
+  .shot::before { width: 340px; height: 340px; }
   .form { padding: var(--sp-7); }
   .site-footer__grid { grid-template-columns: 1fr auto; align-items: center; }
 }
