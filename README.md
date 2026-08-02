@@ -36,12 +36,9 @@ npm run og             # tools/og-image.html → assets/img/og-image.png (1200×
 
 ## 배포 전 체크리스트
 
-> ⚠️ **릴리스 게이트 — 이 둘은 반드시 처리하고 공개하세요.**
-> 1. **문의 폼을 실제로 연결할 것.** 기본값 `mailto` 는 메일 앱이 없는 PC 에서 아무 일도
+> ⚠️ **릴리스 게이트 — 이건 반드시 처리하고 공개하세요.**
+> **문의 폼을 실제로 연결할 것.** 기본값 `mailto` 는 메일 앱이 없는 PC 에서 아무 일도
 >    일어나지 않습니다. 페이지의 전환 목표가 문의 하나이므로, 연결 전에는 문의가 거의 안 들어옵니다.
-> 2. **`assets/img/screen-*.svg` 를 실제 캡처로 교체할 것.** 지금 화면 안의 수치(정답률 84% 등)는
->    전부 예시입니다. 그래서 목업마다 `예시 화면` 배지가 붙어 있습니다.
->    실제 캡처로 바꾸면 배지(`.phone__tag`)와 하단 안내 문구도 함께 지우세요.
 
 ### 1. 도메인 교체 (필수)
 
@@ -66,11 +63,26 @@ npm run og             # tools/og-image.html → assets/img/og-image.png (1200×
 - **폴백 · mailto (기본값)** — 위 설정이 비어 있으면 자동으로 메일 클라이언트를 엽니다.
   **설정 전에도 문의가 조용히 사라지지 않습니다.**
 
-### 3. 실제 스크린샷으로 교체
+### 3. 스크린샷 (완료 — 교체 시 참고)
 
-`assets/img/screen-battle.svg` · `screen-dex.svg` · `screen-dashboard.svg` 는 **자리표시자**입니다.
-실제 앱 캡처(PNG/WebP, 세로 비율 440:900 권장)로 바꾸고 `index.html` 의 `src` 확장자를 맞춰주세요.
-교체 후 `npm run og` 를 다시 돌려 OG 이미지도 갱신하세요.
+`assets/img/screen-*.png` 5장은 **실제 사용 화면**입니다. 학교명·학생 이름은 모자이크했습니다.
+
+| 파일 | 화면 | 쓰이는 곳 |
+|---|---|---|
+| `screen-dashboard.png` | 최다 오답 TOP 10 + 반 랭킹 | 히어로 슬라이드 1 |
+| `screen-setup.png` | 엑셀 붙여넣기 · 반 배포 | 히어로 슬라이드 2 |
+| `screen-battle.png` | 몬스터 전투 | 3번 섹션 ① |
+| `screen-dex.png` | 포획 도감 | 3번 섹션 ② |
+| `screen-class.png` | 학생별 현황 | 3번 섹션 ③ |
+
+새 캡처로 바꿀 때 지킬 것:
+
+- **원본 1080×2400 → 정확히 1/2(540×1200)로 축소 후 256색 PNG.** 픽셀아트라
+  정수배 축소가 아니면 뭉개지고, 256색이면 사실상 무손실인데 용량이 1/3 됩니다.
+- **개인정보를 반드시 가리고**, 히어로·3번 섹션의 "학생 이름과 학교명은 가렸습니다"
+  문구를 유지하세요. 가릴 게 없는 캡처라면 그 문구를 지우면 됩니다.
+- **히어로에는 선생님 화면만.** 몬스터·게임 아트는 3번 섹션부터 (`npm run verify` 가 잡습니다).
+- 교체 후 `npm run og` 로 OG 이미지도 갱신하세요.
 
 ### 4. 데모 영상
 
@@ -93,7 +105,7 @@ assets/css/tokens.css   ★ 디자인 토큰 — 색·타이포·간격의 단�
 assets/css/style.css    레이아웃 · 컴포넌트
 assets/js/config.js     ★ 폼 엔드포인트 설정
 assets/js/main.js       슬라이더 · 폼 (의존성 0)
-assets/img/             스크린샷 목업 · 몬스터 · OG · 파비콘
+assets/img/             실제 스크린샷 5장(마스킹 완료) · 몬스터 · OG · 파비콘
 tools/verify.mjs        자동 검증 + 채점
 tools/render-og.mjs     OG 이미지 생성
 docs/                   PLAN.md · DESIGN-SYSTEM.md · VERIFICATION.md

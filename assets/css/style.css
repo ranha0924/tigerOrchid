@@ -260,18 +260,6 @@ h3 { font-size: var(--fs-h3); }
   width: 56px; height: 5px; border-radius: var(--r-pill);
   background: rgba(255, 255, 255, 0.28);
 }
-/* 실제 캡처가 아닌 예시 이미지임을 화면에서 분명히 밝힌다 —
-   신뢰로 파는 페이지에서 그려낸 화면을 실제라고 두면 안 된다.
-   실제 스크린샷으로 교체할 때 이 배지를 함께 지운다. */
-.phone__tag {
-  position: absolute; z-index: 2;
-  top: -10px; right: -8px;
-  padding: 4px 10px;
-  border-radius: var(--r-pill);
-  background: var(--c-ink); color: #fff;
-  font-size: 11px; font-weight: var(--fw-bold); letter-spacing: 0.02em;
-  white-space: nowrap;
-}
 .phone__screen {
   border-radius: 19px; overflow: hidden; background: #fff; display: block;
 }
@@ -534,4 +522,7 @@ h3 { font-size: var(--fs-h3); }
 @media (min-width: 1024px) {
   .quotes { grid-template-columns: repeat(4, 1fr); }
   .phone { max-width: 248px; }
+  /* 히어로는 프레임에 여백이 남는다. 실제 캡처는 목업보다 조밀해서
+     크기가 곧 가독성이므로 여기서만 더 키운다. */
+  .demo .phone { max-width: 296px; }
 }

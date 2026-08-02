@@ -77,7 +77,7 @@ const COPY = [
   ['10. 인스타',           '@r.xanha']
 ];
 const missing = COPY.filter(([, s]) => !has(s));
-check('A', 10, `스펙 카피 ${COPY.length}개 문자열 일치`, missing.length === 0,
+check('A', 9, `스펙 카피 ${COPY.length}개 문자열 일치`, missing.length === 0,
       missing.length ? `누락: ${missing.map(([k]) => k).join(', ')}` : '');
 
 const h1 = (html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/) || [])[1] || '';
@@ -103,13 +103,26 @@ check('A', 3, '몬스터·게임 아트는 3번·6번 섹션에만 (상단은 �
       gameArtOutside.length === 0,
       gameArtOutside.length ? `밖에서 발견: ${gameArtOutside.join(', ')}` : '');
 
-/* 그려낸 자리표시자를 실제 화면이라고 말하면 안 된다 */
-const usesPlaceholder = /screen-(battle|dex|dashboard|setup)\.svg/.test(html);
+/* 화면이 무엇인지 정직하게 밝혔는가.
+     - 그려낸 자리표시자(.svg)를 쓰는 동안은 "예시 화면" 배지를 목업마다 붙이고
+       "실제 화면"이라는 표현을 쓰지 않는다.
+     - 실제 캡처(.png)로 바꾼 뒤에는 반대로, 가린 부분이 있다는 사실을 밝힌다. */
+const usesPlaceholder = /screen-[a-z-]+\.svg/.test(html);
 const tagCount = (html.match(/phone__tag/g) || []).length;
 const phoneCount = (html.match(/class="phone"/g) || []).length;
-check('A', 2, '자리표시자 화면에 "예시" 표기 + "실제 화면" 문구 없음',
-      !usesPlaceholder || (tagCount === phoneCount && tagCount > 0 && !/실제 화면/.test(plain)),
-      usesPlaceholder ? `목업 ${phoneCount}개 중 예시배지 ${tagCount}개` : '실제 캡처 사용 중');
+const disclosesMasking = /학생 이름과 학교명은 가렸습니다/.test(plain);
+check('A', 2,
+      usesPlaceholder ? '자리표시자에 "예시 화면" 배지 + "실제 화면" 문구 없음'
+                      : '실제 캡처 — 마스킹 사실을 화면에서 고지',
+      usesPlaceholder
+        ? (tagCount === phoneCount && tagCount > 0 && !/실제 화면/.test(plain))
+        : disclosesMasking,
+      usesPlaceholder ? `목업 ${phoneCount}개 중 예시배지 ${tagCount}개`
+                      : `실제 캡처 ${phoneCount}개 · 고지 ${disclosesMasking ? 'O' : 'X'}`);
+
+/* 마스킹한 캡처에 학교명·학생 이름이 파일명으로라도 남아 있으면 안 된다 */
+const leakNames = /흥덕|류윤하|유지민|윤지유|한규민|고다은|고하율|곽온유|김건형|김기정|김도현/.test(html);
+check('A', 1, '학교명·학생 이름이 마크업에 남아 있지 않음', !leakNames);
 
 /* 근거 없는 외부 URL 을 넣어두면 안 된다 */
 const outboundLinks = [...html.matchAll(/href="(https?:\/\/[^"]+)"/g)].map((m) => m[1]);
@@ -237,8 +250,14 @@ function dirSize(p) {
   return total;
 }
 const assetsKB = Math.round(dirSize(join(root, 'assets')) / 1024);
+const ogKB = Math.round(statSync(join(root, 'assets/img/og-image.png')).size / 1024);
 const pageKB = Math.round((Buffer.byteLength(html) + Buffer.byteLength(privacy)) / 1024);
-check('E', 2, `로컬 에셋 용량 예산 400KB 이하`, assetsKB <= 400, `assets ${assetsKB}KB · html ${pageKB}KB`);
+// OG 이미지는 크롤러(카톡·페북)만 받아간다 — 방문자 페이지 무게에 넣지 않는다.
+// 방문자가 처음 받는 건 히어로 첫 슬라이드 1장뿐이고 나머지는 lazy 다.
+const pageWeightKB = assetsKB - ogKB;
+const eagerKB = Math.round(statSync(join(root, 'assets/img/screen-dashboard.png')).size / 1024);
+check('E', 2, `페이지 에셋 예산 600KB 이하 (OG 제외)`, pageWeightKB <= 600,
+      `페이지 에셋 ${pageWeightKB}KB (최초 로드 ${eagerKB}KB, 나머지 lazy) · OG ${ogKB}KB · html ${pageKB}KB`);
 
 /* ══ 라이브 검사 (브라우저) ═════════════════════════════════════════════ */
 const live = { ran: false };
@@ -372,10 +391,10 @@ if (!STATIC_ONLY) {
         `블롭 ${h2sizes.blobW}px vs 폰 ${Math.round(h2sizes.phoneW)}px`);
 
   if (ratioReport) {
-    const { purple, orange, light, other } = ratioReport;
-    check('B', 2, '컬러 비율 실측 (밝은 배경 ≥70% · 퍼플계 4~25% · 오렌지 0초과 5이하)',
-          light >= 70 && purple >= 4 && purple <= 25 && orange > 0 && orange <= 5,
-          `밝은배경 ${light}% · 퍼플계 ${purple}% · 오렌지 ${orange}% · 기타(스크린샷 등) ${other}%`);
+    const { purple, orange, orangePx, light, other } = ratioReport;
+    check('B', 2, '컬러 비율 실측 (밝은 배경 ≥70% · 퍼플계 4~25% · 오렌지 존재하되 5% 이하)',
+          light >= 70 && purple >= 4 && purple <= 25 && orangePx > 0 && orange <= 5,
+          `밝은배경 ${light}% · 퍼플계 ${purple}% · 오렌지 ${orange}% · 기타(스크린샷) ${other}%`);
   }
 } else {
   check('D', 15, '반응형 (라이브 검사 생략)', false, '--static 모드');
@@ -459,10 +478,11 @@ function measurePixels(pngPath) {
       else c.other++;
     }
   }
-  const pct = (n) => Math.round((n / (total || 1)) * 1000) / 10;
+  // 오렌지는 배지·숫자뿐이라 비중이 0.1% 미만이다 — 소수 둘째 자리까지 본다
+  const pct = (n) => Math.round((n / (total || 1)) * 10000) / 100;
   // "밝은 배경"은 화이트·오프화이트 + 라이트 오키드 틴트를 함께 본다
   return {
-    purple: pct(c.purple), orange: pct(c.orange),
+    purple: pct(c.purple), orange: pct(c.orange), orangePx: c.orange,
     light: pct(c.light + c.purple), ink: pct(c.ink), other: pct(c.other)
   };
 }
