@@ -1,4 +1,8 @@
 node_modules/
-.verify/
 package-lock.json
 .DS_Store
+
+# 검증·감사 산출물 (스크린샷, 임시 스크립트) — 저장소에 올리지 않는다
+.verify/
+_audit/
+audit-*
