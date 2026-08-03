@@ -326,12 +326,15 @@
   </div>
 </section>
 
-<!-- ══ 5. 신뢰 (숫자) ══════════════════════════════════════════════════════ -->
+<!-- ══ 5. 신뢰 (숫자) ══════════════════════════════════════════════════════
+     모든 수치는 2026년 7월 학생 설문 원본에서 집계한 값이다.
+     원본에는 학생 이름이 있어 저장소에 넣지 않았다. 집계값과 익명 인용만 싣는다. -->
 <section class="section section--tint" aria-labelledby="trust-title">
   <div class="wrap">
     <div class="section__head">
       <p class="eyebrow">이미 교실에서</p>
       <h2 id="trust-title" class="proof__headline">실제 학교에서 영어 선생님이<br>수업·숙제로 사용 중입니다</h2>
+      <p class="lead muted">한 학년 <strong>5개 반</strong>에서 쓰고 있고, 2026년 7월에 학생 <strong>110명</strong>에게 직접 물었습니다.</p>
     </div>
 
     <div class="proof">
@@ -340,35 +343,61 @@
         <p class="proof__desc">쓰고 있는 학생 <strong>110명</strong>에게 직접 물어본 결과입니다.</p>
       </div>
       <div class="proof__card">
-        <p class="proof__stat"><span class="stat">110명</span> <strong>학생 설문 응답</strong></p>
-        <p class="proof__desc">자발적으로 정해진 분량을 초과 학습한 학생 다수.</p>
+        <p class="proof__stat"><span class="stat">50%</span> <strong>정해진 분량을 넘겨서 학습</strong></p>
+        <p class="proof__desc">자발적으로 정해진 분량을 초과 학습한 학생 다수. 절반이 “더 했다”고 답했습니다.</p>
       </div>
+      <div class="proof__card">
+        <p class="proof__stat"><span class="stat">79%</span> <strong>‘없어지면 아쉽다’</strong></p>
+        <p class="proof__desc">내일부터 못 쓰게 된다면 어떻겠냐고 물었습니다.</p>
+      </div>
+      <div class="proof__card">
+        <p class="proof__stat"><span class="stat">75%</span> <strong>숙제가 아니어도 다시 쓰겠다</strong></p>
+        <p class="proof__desc">개학 후에도 쓰겠다(34%) 또는 시험기간에 쓰겠다(41%)고 답했습니다.</p>
+      </div>
+    </div>
+
+    <!-- 선생님에게 가장 인상적인 지표는 "시키지 않았는데 더 했다"는 것이다 -->
+    <div class="why">
+      <h3>절반이 시키지 않은 분량까지 했습니다. 왜 그랬는지 물었습니다.</h3>
+      <ul class="why__list">
+        <li>“오늘 단어 외울 수 있는 한계치를 끝내고 싶어서”</li>
+        <li>“오기가 생겨서 틀린 걸 다 맞고 싶었다”</li>
+        <li>“정해진 분량만으론 공부가 안 되서”</li>
+        <li>“하다 보니 재밌어지는데 20단어로 끝내긴 아쉬워서”</li>
+        <li>“더 많은 단어를 외우고 싶어서”</li>
+        <li>“단어 잘 외워져서”</li>
+      </ul>
+      <p class="why__note">설문에 적힌 답을 그대로 옮겼습니다. 이름은 밝히지 않습니다.</p>
     </div>
 
     <p class="proof__cta">
       숫자만으로 판단하기 어려우시면 <a href="#contact">시연을 요청</a>하셔도 됩니다.
       선생님이 보시게 될 화면을 함께 보며 설명드립니다.
     </p>
-    <p class="proof__limit">
-      지금 보여드릴 수 있는 근거는 여기까지입니다. 부풀리지 않겠습니다.
-      9월에 참여율과 누적 학습량을 이 자리에 추가하겠습니다.
-    </p>
+
+    <!-- 안 맞는 학생도 있다는 사실을 먼저 말한다. 과장하지 않는다는 신호가
+         나머지 숫자를 믿게 만든다. -->
+    <div class="proof__honest">
+      <h3>모든 학생에게 맞지는 않았습니다</h3>
+      <p>
+        <strong>7%</strong>는 ‘예전 방식이 낫다’고 답했고, <strong>25%</strong>는 개학 후에는 안 쓸 것 같다고 했습니다.
+        그중 한 학생이 이렇게 적었습니다.
+      </p>
+      <blockquote>
+        “저는 종이에 적힌 뜻을 외우는 걸 선호해서 별로라고 한 거지,
+        이걸로 단어 공부에 몰입하는 사람도 있을 거고 호불호가 갈리는 사이트라고 생각합니다.”
+      </blockquote>
+      <p class="why__note">
+        숫자를 부풀리지 않겠습니다. 반 전체가 좋아하는 도구는 없다고 생각합니다.
+        한 반에 4주만 써보시고 우리 반에 맞는지 직접 보시는 편이 빠릅니다.
+      </p>
+    </div>
 
     <!-- ═══ SEPT SLOT ══════════════════════════════════════════════════════
-         9월에 여기에 추가한다. 아래 주석을 풀고 값만 채우면 된다.
-           · 참여율 %      · 누적 학습 단어 수
+         9월에 여기에 추가한다. 지금 없는 것은 아래 둘뿐이다.
            · 선생님 코멘트  · 언론 보도 링크
+         ※ 학교명이 딸려 들어가지 않게 확인할 것 (반이 특정되면 가린 학생 이름도 되짚어진다)
 
-      <div class="proof" style="margin-top:var(--sp-4)">
-        <div class="proof__card">
-          <p class="proof__stat"><span class="stat">00%</span> <strong>주간 참여율</strong></p>
-          <p class="proof__desc">설명을 적습니다.</p>
-        </div>
-        <div class="proof__card">
-          <p class="proof__stat"><span class="stat">00,000개</span> <strong>누적 학습 단어</strong></p>
-          <p class="proof__desc">설명을 적습니다.</p>
-        </div>
-      </div>
       <blockquote class="quote" style="margin-top:var(--sp-4)">
         <p>선생님 코멘트를 여기에.</p>
         <footer>○○중학교 영어 교사</footer>
@@ -393,6 +422,10 @@
       <blockquote class="quote"><p>덕분에 단어 잘 외우고 있습니다</p><footer>학생 설문 응답</footer></blockquote>
       <blockquote class="quote"><p>몬스터를 잡는 방식이 쾌감있다</p><footer>학생 설문 응답</footer></blockquote>
       <blockquote class="quote"><p>하다 보니 시간 가는 줄 모르고 했어요</p><footer>학생 설문 응답</footer></blockquote>
+      <blockquote class="quote"><p>틀린 단어를 반복해서 학습할 수 있다는 게 가장 좋았다</p><footer>학생 설문 응답</footer></blockquote>
+      <blockquote class="quote"><p>하다 보니 흥미가 생겨 자연스레 계속하게 되었다</p><footer>학생 설문 응답</footer></blockquote>
+      <blockquote class="quote"><p>뜻을 고르는 것뿐 아니라 단어를 직접 입력하는 것도 있어서 스펠링까지 외울 수 있는 점이 좋았다</p><footer>학생 설문 응답</footer></blockquote>
+      <blockquote class="quote"><p>단어 외울 때 유용하게 잘 쓰고 있습니다</p><footer>학생 설문 응답</footer></blockquote>
     </div>
 
     <img class="voices__art" src="assets/img/monsters.svg" alt="WORD QUEST에 등장하는 몬스터 일러스트 세 종" width="640" height="200" loading="lazy" decoding="async">

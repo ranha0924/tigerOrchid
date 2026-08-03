@@ -499,6 +499,47 @@ h3 { font-size: var(--fs-h3); }
   font-size: var(--fs-h2); line-height: 1.4;
 }
 
+/* 시키지 않았는데 더 했다 — 선생님에게 가장 인상적인 지표의 근거 */
+.why {
+  margin-top: var(--sp-5);
+  padding: var(--sp-6);
+  background: var(--c-surface);
+  border-radius: var(--r-card);
+}
+.why h3 { font-size: var(--fs-h3); margin-bottom: var(--sp-4); }
+.why__list { display: grid; gap: 10px; }
+.why__list li {
+  display: flex; gap: 10px; align-items: flex-start;
+  color: var(--c-ink);
+}
+.why__list li::before {
+  content: ""; flex: none; margin-top: 9px;
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--c-purple);
+}
+.why__note { margin-top: var(--sp-4); font-size: var(--fs-caption); color: var(--c-ink-soft); }
+
+/* 안 맞는 학생도 있다는 사실을 먼저 말한다 */
+.proof__honest {
+  margin-top: var(--sp-5);
+  padding: var(--sp-6);
+  background: var(--c-surface);
+  border: 1px solid var(--c-line);
+  border-radius: var(--r-card);
+  max-width: 860px;
+}
+.proof__honest h3 { font-size: var(--fs-h3); margin-bottom: var(--sp-3); }
+.proof__honest blockquote {
+  margin-top: var(--sp-4);
+  padding-left: var(--sp-4);
+  border-left: 3px solid var(--c-line);
+  color: var(--c-ink-soft);
+}
+
+@media (min-width: 760px) {
+  .why__list { grid-template-columns: repeat(2, 1fr); gap: 10px var(--sp-5); }
+}
+
 /* ── 학생들의 말 ───────────────────────────────────────────────────────── */
 .quotes { display: grid; gap: var(--sp-4); margin-top: var(--sp-6); }
 .quote {
