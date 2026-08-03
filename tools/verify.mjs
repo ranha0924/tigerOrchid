@@ -127,7 +127,8 @@ check('A', 1, '학교명·학생 이름이 마크업에 남아 있지 않음', !
 /* 근거 없는 외부 URL 을 넣어두면 안 된다 */
 const outboundLinks = [...html.matchAll(/href="(https?:\/\/[^"]+)"/g)].map((m) => m[1]);
 const ALLOWED_HOSTS = ['cdn.jsdelivr.net', 'www.instagram.com', 'ranha0924.github.io',
-                       'schema.org', 'www.youtube-nocookie.com'];
+                       'schema.org', 'www.youtube-nocookie.com',
+                       'word-quest-fywr.vercel.app'];   // 학생 앱 (운영자 확인)
 const unknownHosts = outboundLinks
   .map((u) => { try { return new URL(u).host; } catch { return u; } })
   .filter((h) => !ALLOWED_HOSTS.includes(h));

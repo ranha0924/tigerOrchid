@@ -84,7 +84,8 @@ assets/css/tokens.css 디자인 토큰 — 색·타이포·간격의 단일 진�
 assets/css/style.css  레이아웃·컴포넌트
 assets/js/config.js   ★ 폼 엔드포인트 설정. 운영자가 여기만 고치면 된다
 assets/js/main.js     슬라이더·폼 제출·스크롤
-assets/img/           실제 스크린샷 PNG 5장(마스킹 완료), 몬스터, 제작자, OG, 파비콘
+assets/img/           실제 스크린샷 PNG 5장 (마스킹 + 브라우저/시스템 크롬 제거,
+                      540×1063 로 통일), 몬스터, 제작자, OG, 파비콘
 tools/verify.mjs      자동 검증 + 100점 채점
 tools/render-og.mjs   OG 이미지(1200×630 PNG) 재생성
 docs/                 PLAN.md / DESIGN-SYSTEM.md / VERIFICATION.md
@@ -115,6 +116,11 @@ docs/                 PLAN.md / DESIGN-SYSTEM.md / VERIFICATION.md
 3. 1분 데모 영상 완성 → 히어로 슬라이드를 유튜브 unlisted 임베드로 교체 (`index.html`의 `<!-- VIDEO SLOT -->`)
 4. 9월 지표(참여율 %, 누적 학습 단어 수, 선생님 코멘트, 언론 보도 링크) → 5번 섹션 `<!-- SEPT SLOT -->`에 삽입
 5. 개인정보처리방침의 사업자 정보 확정
+6. 배포 도메인 확정 → `index.html` 의 canonical / og:url / og:image / twitter:image 4곳 교체
+
+확정된 사실 (페이지에 반영 완료):
+- 학생 앱 주소: `https://word-quest-fywr.vercel.app/` (푸터 링크)
+- 광고·결제 유도 **없음** / 학습 기록 내보내기 **아직 안 됨** — 둘 다 FAQ 에 명시
 
 ## 9. 구매자 관점 원칙 (스펙 준수와 별개로 지킬 것)
 
