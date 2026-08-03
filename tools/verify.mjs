@@ -77,7 +77,7 @@ const COPY = [
   ['10. 인스타',           '@r.xanha']
 ];
 const missing = COPY.filter(([, s]) => !has(s));
-check('A', 9, `스펙 카피 ${COPY.length}개 문자열 일치`, missing.length === 0,
+check('A', 8, `스펙 카피 ${COPY.length}개 문자열 일치`, missing.length === 0,
       missing.length ? `누락: ${missing.map(([k]) => k).join(', ')}` : '');
 
 const h1 = (html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/) || [])[1] || '';
@@ -123,6 +123,16 @@ check('A', 2,
 /* 마스킹한 캡처에 학교명·학생 이름이 파일명으로라도 남아 있으면 안 된다 */
 const leakNames = /흥덕|류윤하|유지민|윤지유|한규민|고다은|고하율|곽온유|김건형|김기정|김도현/.test(html);
 check('A', 1, '학교명·학생 이름이 마크업에 남아 있지 않음', !leakNames);
+
+/* 포지셔닝: 시험·채점을 대체한다고 말하면 안 된다.
+   대체하는 것은 "아이들이 외워오는 과정"이다. "채점"은 2번 섹션 스펙 카피
+   (선생님의 통증 묘사) 한 번만 나와야 하고, 시험을 그대로 보셔도 된다는
+   명확화 문장이 반드시 있어야 한다. */
+const gradingMentions = (plain.match(/채점/g) || []).length;
+const keepsExam = /시험을 대신하는 게 아니라/.test(plain) && /시험은 지금 보시던 대로/.test(plain);
+check('A', 1, '"시험·채점 대체"로 읽히지 않음 (외워오는 과정을 대체)',
+      gradingMentions === 1 && keepsExam,
+      `"채점" ${gradingMentions}회(스펙 카피 1회만 허용) · 명확화 문장 ${keepsExam ? 'O' : 'X'}`);
 
 /* 근거 없는 외부 URL 을 넣어두면 안 된다 */
 const outboundLinks = [...html.matchAll(/href="(https?:\/\/[^"]+)"/g)].map((m) => m[1]);
