@@ -322,6 +322,29 @@
     });
   });
 
+  /* 문의 내용 빠른 채우기 — 빈 칸 앞에서 멈추는 사람을 넘겨준다 */
+  var chipBox = form.querySelector('[data-chips]');
+  if (chipBox) {
+    var messageEl = form.querySelector('#f-message');
+    chipBox.addEventListener('click', function (e) {
+      var chip = e.target.closest('[data-chip]');
+      if (!chip) return;
+      var text = chip.getAttribute('data-chip');
+      var already = messageEl.value.indexOf(text) !== -1;
+      if (already) {
+        messageEl.value = messageEl.value.replace(text, '').replace(/\n{3,}/g, '\n\n').trim();
+        chip.setAttribute('aria-pressed', 'false');
+      } else {
+        messageEl.value = (messageEl.value ? messageEl.value.trim() + '\n' : '') + text;
+        chip.setAttribute('aria-pressed', 'true');
+      }
+      messageEl.focus();
+    });
+    chipBox.querySelectorAll('[data-chip]').forEach(function (c) {
+      c.setAttribute('aria-pressed', 'false');
+    });
+  }
+
   // 입력하는 동안 에러 표시를 지운다
   form.addEventListener('input', function (e) {
     var wrap = e.target.closest('[data-field]');

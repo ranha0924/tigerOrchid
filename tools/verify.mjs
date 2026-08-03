@@ -89,7 +89,7 @@ const bodyBeforeFooter = html.slice(0, html.indexOf('<footer class="site-footer"
 check('A', 2, '학생 앱 링크가 푸터 위로 올라오지 않음', !bodyBeforeFooter.includes('학생용 앱'));
 
 const sectionCount = (html.match(/<section\b/g) || []).length;
-check('A', 1, `섹션 9개 + 푸터 (총 10 블록)`, sectionCount >= 9 && /<footer/.test(html), `section ${sectionCount}개`);
+check('A', 1, `스펙 섹션 9개 이상 + 푸터`, sectionCount >= 9 && /<footer/.test(html), `section ${sectionCount}개`);
 
 /* 게임 아트는 3번(해결)·6번(학생들의 말) 섹션에만.
    페이지 상단은 어른의 신뢰 영역 — 히어로에 몬스터가 나오면 안 된다. */
@@ -256,7 +256,7 @@ const pageKB = Math.round((Buffer.byteLength(html) + Buffer.byteLength(privacy))
 // 방문자가 처음 받는 건 히어로 첫 슬라이드 1장뿐이고 나머지는 lazy 다.
 const pageWeightKB = assetsKB - ogKB;
 const eagerKB = Math.round(statSync(join(root, 'assets/img/screen-dashboard.png')).size / 1024);
-check('E', 2, `페이지 에셋 예산 600KB 이하 (OG 제외)`, pageWeightKB <= 600,
+check('E', 1, `페이지 에셋 예산 600KB 이하 (OG 제외)`, pageWeightKB <= 600,
       `페이지 에셋 ${pageWeightKB}KB (최초 로드 ${eagerKB}KB, 나머지 lazy) · OG ${ogKB}KB · html ${pageKB}KB`);
 
 /* ══ 라이브 검사 (브라우저) ═════════════════════════════════════════════ */
@@ -348,6 +348,11 @@ if (!STATIC_ONLY) {
   await page.waitForTimeout(150);
   const sliderOk = await page.evaluate(() =>
     document.querySelector('[data-slider-track]').style.transform.includes('-100%'));
+  // [hidden] 을 붙였는데 클래스의 display 가 이겨서 보이는 요소가 없는지
+  const hiddenLeaks = await page.evaluate(() =>
+    [...document.querySelectorAll('[hidden]')]
+      .filter((el) => el.getBoundingClientRect().height > 0)
+      .map((el) => el.className || el.tagName));
   await page.close();
 
   // 섹션 타이틀이 전부 같은 스케일인가 — 하나만 h3 크기로 새면 위계가 무너진다
@@ -383,6 +388,8 @@ if (!STATIC_ONLY) {
         formGuard.errs >= 3 && formGuard.status.length > 0 && sliderOk,
         `에러표시 ${formGuard.errs}개 · 슬라이더 ${sliderOk ? 'OK' : 'NG'}`);
   check('B', 1, '형광펜 밑줄이 실제로 칠해짐 (부모 배경 뒤로 사라지지 않음)', hlPainted);
+
+  check('E', 1, '[hidden] 요소가 실제로 숨겨져 있음', hiddenLeaks.length === 0, hiddenLeaks.join(', '));
 
   check('B', 2, '섹션 타이틀 스케일 균일 (28px)', uniform && sizeVals[0] === 28,
         Object.entries(h2sizes.sizes).map(([k, v]) => `${k} ${v}px`).join(' · '));

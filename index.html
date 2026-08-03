@@ -80,6 +80,7 @@
 <section class="hero" id="top">
   <div class="wrap hero__grid">
     <div>
+      <p class="eyebrow">학교·학원 선생님을 위한 안내</p>
       <h1 class="hero__title">단어 숙제를,<br>아이들이 <span class="hl">하고 싶어하게</span></h1>
 
       <p class="hero__sub">
@@ -92,7 +93,12 @@
         <a class="btn btn--primary" href="#contact" data-cta="hero-school">학교는 무료로 시작하기</a>
         <a class="btn btn--secondary" href="#contact" data-cta="hero-inquiry">도입 문의하기</a>
       </div>
-      <p class="hero__note">학교는 무료입니다. 학원은 한 반 4주 무료 체험 후 협의합니다.</p>
+      <ul class="hero__facts">
+        <li>학교는 무료</li>
+        <li>학원은 4주 무료 체험</li>
+        <li>설치 없이 브라우저로</li>
+        <li>계약서 없음</li>
+      </ul>
     </div>
 
     <!-- ── 데모 영상 자리 ──────────────────────────────────────────────────
@@ -111,7 +117,7 @@
          ──────────────────────────────────────────────────────────────── -->
     <div class="demo">
       <div class="demo__frame">
-        <p class="demo__label"><span class="demo__dot" aria-hidden="true"></span>1분 데모 영상은 준비 중입니다 — 먼저 실제 화면부터 보세요</p>
+        <p class="demo__label"><span class="demo__dot" aria-hidden="true"></span>영상 대신, 선생님이 실제로 보시는 화면을 그대로 보여드립니다</p>
 
         <div class="slider" data-slider>
           <div class="slider__viewport">
@@ -256,6 +262,63 @@
         <p>반 아이들의 학습이 모여 보스를 잡는 협동 이벤트</p>
       </li>
     </ul>
+
+    <!-- 숙제 앱에 대한 선생님의 1번 질문에 대한 답. 스크린샷의 서버 검증 기능 근거. -->
+    <div class="note">
+      <svg class="note__icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
+        <path d="M12 3l7 2.6v5.6c0 4.3-2.9 7.7-7 8.8-4.1-1.1-7-4.5-7-8.8V5.6L12 3Z"/>
+        <path d="M9 12l2.2 2.2L15.5 10"/>
+      </svg>
+      <div>
+        <h3>“안 하고 했다고 하면요?”</h3>
+        <p>연속 학습일과 학습량은 <strong>서버가 직접 관측한 값</strong>이라 학생 쪽에서 바꿀 수 없습니다.
+           앱이 보고한 값과 서버가 확인한 값을 대시보드에서 구분해 보여드립니다.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 4.5 무엇이 달라지나 ═════════════════════════════════════════════════
+     구매자가 결정 직전에 하는 질문은 "지금 방식과 뭐가 다른가"다.
+     경쟁 제품을 깎지 않는다 — 근거 없는 비교는 이 페이지의 신뢰를 깎는다.
+     2번(공감) 섹션의 통증과 한 줄씩 짝을 맞춘다. -->
+<section class="section" aria-labelledby="change-title">
+  <div class="wrap">
+    <div class="section__head">
+      <p class="eyebrow">무엇이 달라지나</p>
+      <h2 id="change-title">선생님의 일이 이렇게 바뀝니다</h2>
+    </div>
+
+    <ul class="change">
+      <li class="change__head" aria-hidden="true">
+        <span>지금</span>
+        <span>WORD QUEST</span>
+      </li>
+      <li class="change__row">
+        <p class="change__before"><span class="change__tag">지금</span>단어 시험지를 매번 만든다</p>
+        <p class="change__after"><span class="change__tag">바뀜</span>엑셀에서 붙여넣거나 교재를 찍는다</p>
+      </li>
+      <li class="change__row">
+        <p class="change__before"><span class="change__tag">지금</span>걷어서 하나씩 채점한다</p>
+        <p class="change__after"><span class="change__tag">바뀜</span>자동으로 채점되어 기록이 쌓인다</p>
+      </li>
+      <li class="change__row">
+        <p class="change__before"><span class="change__tag">지금</span>누가 안 해왔는지 일일이 확인한다</p>
+        <p class="change__after"><span class="change__tag">바뀜</span>학생별 현황을 한 화면에서 본다</p>
+      </li>
+      <li class="change__row">
+        <p class="change__before"><span class="change__tag">지금</span>어떤 단어가 약한지 감으로 안다</p>
+        <p class="change__after"><span class="change__tag">바뀜</span>우리 반 최다 오답 TOP 10 으로 본다</p>
+      </li>
+      <li class="change__row">
+        <p class="change__before"><span class="change__tag">지금</span>했다고만 하면 확인할 길이 없다</p>
+        <p class="change__after"><span class="change__tag">바뀜</span>서버가 관측한 기록으로 확인한다</p>
+      </li>
+      <li class="change__row">
+        <p class="change__before"><span class="change__tag">지금</span>아이들이 단어장을 미룬다</p>
+        <p class="change__after"><span class="change__tag">바뀜</span>몬스터를 잡으려고 먼저 켠다</p>
+      </li>
+    </ul>
   </div>
 </section>
 
@@ -270,13 +333,22 @@
     <div class="proof">
       <div class="proof__card">
         <p class="proof__stat"><span class="stat">69%</span> <strong>‘기존 암기 방식보다 낫다’</strong></p>
-        <p class="proof__desc">학생 <strong>110명</strong> 설문 결과입니다.</p>
+        <p class="proof__desc">쓰고 있는 학생 <strong>110명</strong>에게 직접 물어본 결과입니다.</p>
       </div>
       <div class="proof__card">
         <p class="proof__stat"><span class="stat">110명</span> <strong>학생 설문 응답</strong></p>
         <p class="proof__desc">자발적으로 정해진 분량을 초과 학습한 학생 다수.</p>
       </div>
     </div>
+
+    <p class="proof__cta">
+      숫자만으로 판단하기 어려우시면 <a href="#contact">시연을 요청</a>하셔도 됩니다.
+      선생님이 보시게 될 화면을 함께 보며 설명드립니다.
+    </p>
+    <p class="proof__limit">
+      지금 보여드릴 수 있는 근거는 여기까지입니다. 부풀리지 않겠습니다.
+      9월에 참여율과 누적 학습량을 이 자리에 추가하겠습니다.
+    </p>
 
     <!-- ═══ SEPT SLOT ══════════════════════════════════════════════════════
          9월에 여기에 추가한다. 아래 주석을 풀고 값만 채우면 된다.
@@ -360,10 +432,154 @@
       <div class="plan">
         <p class="plan__name">학원</p>
         <p class="plan__price">한 반 4주 무료 체험</p>
-        <p>체험 후, 원장님과 협의해 결정합니다.</p>
+        <p>체험 후, 원장님과 협의해 결정합니다. 강사님이 시험지를 만들고 채점하던 시간이 줄고,
+           반별로 쌓인 학습 기록은 학부모 상담 때 그대로 보여드릴 수 있습니다.</p>
         <a class="btn btn--secondary" href="#contact" data-cta="plan-academy">체험 문의하기</a>
       </div>
     </div>
+
+    <p class="plans__note">계약서를 쓰지 않습니다. 도입에 드는 비용이 없으니, 맞지 않으면 언제든 멈추셔도 됩니다.</p>
+  </div>
+</section>
+
+<!-- ══ 8.5 도입 절차 ═══════════════════════════════════════════════════════
+     구매자가 페이지를 닫는 가장 큰 이유는 "일이 커지겠네"다.
+     실무 부담이 얼마나 작은지 숫자로 보여준다. -->
+<section class="section section--white" aria-labelledby="steps-title">
+  <div class="wrap">
+    <div class="section__head">
+      <p class="eyebrow">도입 절차</p>
+      <h2 id="steps-title">선생님이 하실 일은 세 가지뿐입니다</h2>
+    </div>
+
+    <ol class="steps">
+      <li class="step">
+        <span class="step__num">1</span>
+        <div>
+          <h3>문의 남기기 <span class="step__time">1분</span></h3>
+          <p>학교·학원 이름과 연락처만 적어주시면 됩니다. 제작자가 직접 읽고 답장드립니다.</p>
+        </div>
+      </li>
+      <li class="step">
+        <span class="step__num">2</span>
+        <div>
+          <h3>반 만들기 <span class="step__time">함께 세팅</span></h3>
+          <p>반 개설과 학생 참여 방법은 제작자가 연락드려 함께 잡아드립니다. 선생님이 학생 계정을 하나씩 만드실 필요는 없습니다.</p>
+        </div>
+      </li>
+      <li class="step">
+        <span class="step__num">3</span>
+        <div>
+          <h3>단어 배포하기 <span class="step__time">5분</span></h3>
+          <p>엑셀에서 붙여넣거나 교재를 찍어 올리고, 받을 반을 고른 뒤 배포하면 끝입니다. 여러 반에 한 번에 보낼 수 있습니다.</p>
+        </div>
+      </li>
+    </ol>
+
+    <div class="steps__cta">
+      <a class="btn btn--primary" href="#contact" data-cta="steps">1번부터 시작하기</a>
+      <span>지금 하실 일은 연락처를 남기는 것뿐입니다.</span>
+    </div>
+  </div>
+</section>
+
+<!-- ══ 8.7 자주 묻는 것 ════════════════════════════════════════════════════
+     선생님·원장이 실제로 걱정하는 것만 담는다. 확인되지 않은 사실은 쓰지 않는다. -->
+<section class="section" aria-labelledby="faq-title">
+  <div class="wrap">
+    <div class="section__head">
+      <p class="eyebrow">자주 묻는 것</p>
+      <h2 id="faq-title">궁금하실 만한 것을 먼저 적었습니다</h2>
+    </div>
+
+    <div class="faq">
+      <details class="faq__item">
+        <summary>학생 계정을 제가 다 만들어야 하나요?</summary>
+        <p>아니요. 반을 만들고 학생이 참여하는 방법은 도입할 때 제작자가 함께 세팅해 드립니다.
+           선생님이 학생 명단을 일일이 입력하실 필요는 없습니다.</p>
+      </details>
+
+      <details class="faq__item">
+        <summary>학생이 안 하고 했다고 하면 어떻게 아나요?</summary>
+        <p>연속 학습일과 학습량은 서버가 직접 관측한 값이라 학생 쪽에서 바꿀 수 없습니다.
+           앱이 보고한 값과 서버가 확인한 값을 대시보드에서 구분해 표시하므로,
+           숙제를 실제로 했는지 선생님이 판단하실 수 있습니다.</p>
+      </details>
+
+      <details class="faq__item">
+        <summary>학교에서 스마트폰을 못 쓰는데요.</summary>
+        <p>설치가 필요 없는 웹 서비스입니다. 브라우저만 있으면 PC·태블릿·스마트폰 어디서든 들어옵니다.
+           앱스토어 설치나 별도 프로그램이 필요하지 않습니다.</p>
+      </details>
+
+      <details class="faq__item">
+        <summary>우리 교재 단어를 그대로 쓸 수 있나요?</summary>
+        <p>네. 엑셀이나 한글 문서에서 <em>단어[탭]뜻</em> 형태로 복사해 붙여넣으면 그대로 등록됩니다.
+           교재를 사진으로 찍어 올리면 단어와 뜻을 자동으로 읽어 등록하는 기능도 있습니다.</p>
+      </details>
+
+      <details class="faq__item">
+        <summary>수업에 어떻게 넣나요? 시간이 많이 드나요?</summary>
+        <p>주로 <strong>숙제</strong>로 씁니다. 단어를 배포해 두면 학생이 각자 풀고,
+           선생님은 다음 수업 전에 대시보드에서 누가 했는지와 최다 오답만 확인하시면 됩니다.
+           수업 중 활동으로 쓰셔도 됩니다.</p>
+      </details>
+
+      <details class="faq__item">
+        <summary>반이 여러 개인데 다 쓸 수 있나요?</summary>
+        <p>네. 반을 여러 개 만들고, 한 번 만든 단어 묶음을 여러 반에 한꺼번에 배포할 수 있습니다.
+           대시보드는 반별로 따로 봅니다.</p>
+      </details>
+
+      <details class="faq__item">
+        <summary>학생 정보는 어떻게 다루나요?</summary>
+        <p>학생의 학습 기록은 담당 선생님이 보시라고 있는 것입니다.
+           이 페이지에 실린 화면도 학생 이름과 학교명을 모두 가려서 올렸습니다.
+           학교 규정에 맞춰 확인이 필요하신 부분은 문의 주시면 자세히 안내드리겠습니다.</p>
+      </details>
+
+      <details class="faq__item">
+        <summary>학원에서 쓰면 무엇이 달라지나요?</summary>
+        <p>강사님이 단어 시험지를 만들고 채점하는 일이 줄어듭니다.
+           누가 했고 어디서 틀렸는지는 반별 대시보드에 쌓이니, 학부모 상담 때 그대로 보여드릴 수 있습니다.
+           한 반 4주를 무료로 써보시고 판단하시면 됩니다.</p>
+      </details>
+
+      <details class="faq__item">
+        <summary>학교는 왜 무료인가요? 나중에 청구되나요?</summary>
+        <p>지금 이 프로그램을 매일 쓰는 건 제 학교 친구들입니다. 학교에서 쓰이는 걸 보며 만들었기 때문에
+           학교는 무료로 드립니다. 나중에 청구하지 않습니다.
+           학원은 한 반 4주 무료 체험 후 원장님과 협의해 결정합니다.</p>
+      </details>
+
+      <details class="faq__item">
+        <summary>우리 반에 필요한 기능이 없으면요?</summary>
+        <p>말씀해 주시면 만들어 드립니다. 지금도 쓰고 계신 선생님 요청을 받아 매주 고치고 있습니다.
+           대단한 기능이 아니어도 좋습니다 — 숙제 기한을 바꾸고 싶다든지, 오답을 다르게 보고 싶다든지 하는 것부터 말씀해 주세요.</p>
+      </details>
+
+      <details class="faq__item">
+        <summary>만든 사람이 고등학생인데, 계속 운영되나요?</summary>
+        <p>솔직하게 말씀드리면, 그 점이 걱정되시는 게 당연합니다.
+           그래서 <strong>학교는 무료이고 계약서를 쓰지 않습니다.</strong>
+           도입에 드는 비용이 없으니 맞지 않으면 언제든 멈추셔도 손해가 없습니다.
+           지금은 제 학교 친구들이 매일 쓰고 있어서, 매주 직접 고치고 있습니다.</p>
+      </details>
+    </div>
+
+    <!-- ═══ FAQ SLOT ══════════════════════════════════════════════════════
+         아래 두 가지는 사실 확인 후 주석을 풀어 넣으세요.
+         구매자가 자주 묻지만, 확인되지 않은 내용을 쓰면 이 페이지의 신뢰가 깨집니다.
+
+      <details class="faq__item">
+        <summary>광고나 결제 유도가 있나요?</summary>
+        <p>(예: 광고를 붙이지 않습니다. 학생에게 결제를 유도하는 화면도 없습니다.)</p>
+      </details>
+      <details class="faq__item">
+        <summary>학습 기록을 내보낼 수 있나요?</summary>
+        <p>(예: 반별 학습 기록을 엑셀로 내려받으실 수 있습니다.)</p>
+      </details>
+    ═══════════════════════════════════════════════════════════════════════ -->
   </div>
 </section>
 
@@ -385,6 +601,13 @@
       <h2 id="contact-title">한 반부터 조용히 시작해 보세요</h2>
       <p class="lead muted">학교·학원 어디든 좋습니다. 무엇이 궁금하신지만 적어주시면 됩니다.</p>
     </div>
+
+    <ul class="promise">
+      <li>제작자가 직접 읽고 답장드립니다.</li>
+      <li>궁금한 것만 물어보셔도 됩니다. 바로 도입하지 않으셔도 괜찮습니다.</li>
+      <li>시연부터 보고 싶다고 적어주셔도 됩니다.</li>
+      <li>한 반만 조용히 시작하셔도 됩니다.</li>
+    </ul>
 
     <!-- 폼 동작은 assets/js/config.js 의 FORM_MODE 로 정한다.
          google → Google Form 전송 / firestore → inquiries 컬렉션 / mailto → 메일 폴백(기본) -->
@@ -409,6 +632,11 @@
 
       <div class="field" data-field="message">
         <label for="f-message">문의 내용</label>
+        <div class="chips" data-chips>
+          <button type="button" class="chip" data-chip="한 반에 먼저 써보고 싶습니다. 어떻게 시작하면 되나요?">한 반 먼저 써보고 싶어요</button>
+          <button type="button" class="chip" data-chip="화면을 먼저 보고 싶습니다. 시연이 가능할까요?">시연을 보고 싶어요</button>
+          <button type="button" class="chip" data-chip="학원인데 도입 조건이 궁금합니다.">학원 조건이 궁금해요</button>
+        </div>
         <textarea id="f-message" name="message" placeholder="예) 중2 한 반에 먼저 써보고 싶습니다. 교재 단어도 등록되나요?" aria-describedby="err-message"></textarea>
         <p class="field__error" id="err-message"></p>
       </div>
@@ -435,7 +663,8 @@
     </form>
 
     <p class="contact__after">
-      폼이 어려우시면 <a href="mailto:ranha.projects@gmail.com">ranha.projects@gmail.com</a> 으로 바로 보내주셔도 됩니다.
+      폼이 어려우시면 <a href="mailto:ranha.projects@gmail.com">ranha.projects@gmail.com</a> 으로 바로 보내주셔도 되고,
+      <a href="https://www.instagram.com/r.xanha/" target="_blank" rel="noopener">인스타그램 @r.xanha</a> 로 메시지를 주셔도 됩니다.
     </p>
   </div>
 </section>

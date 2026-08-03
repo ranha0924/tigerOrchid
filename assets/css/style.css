@@ -172,6 +172,20 @@ h3 { font-size: var(--fs-h3); }
 .hero__cta .btn { flex: 1 1 220px; }
 .hero__note { margin-top: var(--sp-4); font-size: var(--fs-caption); color: var(--c-ink-soft); }
 
+/* 진입 장벽이 낮다는 사실을 CTA 바로 아래에서 못 박는다 */
+.hero__facts {
+  display: flex; flex-wrap: wrap; gap: 8px 18px;
+  margin-top: var(--sp-4);
+  font-size: var(--fs-caption); color: var(--c-ink-soft);
+}
+.hero__facts li { display: inline-flex; align-items: center; gap: 6px; }
+.hero__facts li::before {
+  content: ""; flex: none;
+  width: 14px; height: 14px; border-radius: 50%;
+  background: var(--c-purple-tint);
+  box-shadow: inset 0 0 0 1.5px var(--c-purple);
+}
+
 /* 문장 안에 섞인 숫자(히어로의 110명·69%)
    오렌지를 쓰지 않는다 — 본문 크기(16/17px)는 "큰 텍스트"가 아니라서
    오렌지로는 대비 4.5:1 을 만들 수 없다. 스펙이 "오렌지를 작은 본문 텍스트
@@ -333,6 +347,142 @@ h3 { font-size: var(--fs-h3); }
   background: var(--c-orange); color: var(--c-ink);
 }
 
+/* 숙제 앱의 1번 반론을 기능 섹션 안에서 바로 받아친다 */
+.note {
+  display: flex; gap: var(--sp-4);
+  align-items: flex-start;
+  margin-top: var(--sp-5);
+  padding: var(--sp-5);
+  background: var(--c-purple-tint);
+  border-radius: var(--r-card);
+}
+.note__icon { width: 30px; height: 30px; flex: none; color: var(--c-purple); }
+.note h3 { font-size: var(--fs-h3); margin-bottom: 6px; }
+.note p { color: var(--c-ink); }
+
+/* ── 도입 절차 ─────────────────────────────────────────────────────────── */
+.steps { display: grid; gap: var(--sp-4); margin-top: var(--sp-6); counter-reset: step; }
+.step {
+  display: flex; gap: var(--sp-4); align-items: flex-start;
+  background: var(--c-surface);
+  border: 1px solid var(--c-line);
+  border-radius: var(--r-card);
+  box-shadow: var(--sh-card);
+  padding: var(--sp-5);
+}
+.step__num {
+  flex: none;
+  width: 34px; height: 34px; border-radius: 50%;
+  background: var(--c-purple); color: #fff;
+  font-family: var(--ff-head); font-weight: var(--fw-bold); font-size: 17px;
+  display: inline-flex; align-items: center; justify-content: center;
+}
+.step h3 { display: flex; align-items: center; gap: 10px; flex-wrap: wrap; margin-bottom: 6px; }
+.step__time {
+  font-family: var(--ff-body);
+  font-size: 12px; font-weight: var(--fw-bold); letter-spacing: 0.02em;
+  padding: 3px 9px; border-radius: var(--r-pill);
+  background: var(--c-purple-tint); color: var(--c-purple-deep);
+}
+.step p { color: var(--c-ink); }
+
+.steps__cta {
+  display: flex; flex-wrap: wrap; align-items: center; gap: var(--sp-4);
+  margin-top: var(--sp-6);
+}
+.steps__cta span { font-size: var(--fs-caption); color: var(--c-ink-soft); }
+
+.plans__note {
+  margin-top: var(--sp-5);
+  font-size: var(--fs-caption); color: var(--c-ink-soft);
+}
+
+/* ── 자주 묻는 것 ──────────────────────────────────────────────────────── */
+.faq { display: grid; gap: var(--sp-3); margin-top: var(--sp-6); max-width: 860px; }
+.faq__item {
+  background: var(--c-surface);
+  border: 1px solid var(--c-line);
+  border-radius: var(--r-card);
+  overflow: hidden;
+}
+.faq__item summary {
+  display: flex; align-items: center; justify-content: space-between; gap: var(--sp-4);
+  min-height: 56px;
+  padding: var(--sp-4) var(--sp-5);
+  font-weight: var(--fw-bold);
+  cursor: pointer;
+  list-style: none;
+  transition: background var(--t-fast);
+}
+.faq__item summary::-webkit-details-marker { display: none; }
+.faq__item summary::after {
+  content: ""; flex: none;
+  width: 11px; height: 11px;
+  border-right: 2px solid var(--c-purple);
+  border-bottom: 2px solid var(--c-purple);
+  transform: rotate(45deg) translate(-2px, -2px);
+  transition: transform var(--t-fast);
+}
+.faq__item[open] summary::after { transform: rotate(-135deg) translate(-2px, -2px); }
+.faq__item summary:hover { background: var(--c-purple-tint); }
+.faq__item > p {
+  padding: 0 var(--sp-5) var(--sp-5);
+  color: var(--c-ink);
+}
+.faq__item em { font-style: normal; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.94em; }
+
+/* ── 문의하면 무슨 일이 일어나는지 ─────────────────────────────────────── */
+.promise { display: grid; gap: 10px; margin-bottom: var(--sp-5); max-width: 560px; }
+.promise li {
+  display: flex; gap: 10px; align-items: flex-start;
+  font-size: var(--fs-caption); color: var(--c-ink);
+}
+.promise li::before {
+  content: ""; flex: none; margin-top: 6px;
+  width: 14px; height: 8px;
+  border-left: 2px solid var(--c-purple);
+  border-bottom: 2px solid var(--c-purple);
+  transform: rotate(-45deg);
+}
+
+/* ── 무엇이 달라지나 (지금 → 바뀜) ────────────────────────────────────── */
+/* 쌍 안쪽은 좁게, 쌍 사이는 넓게 — 그래야 "이건 짝"이라고 읽힌다 */
+.change { display: grid; gap: var(--sp-5); margin-top: var(--sp-6); }
+.change__head { display: none; }
+.change__row { display: grid; gap: 5px; }
+.change__before, .change__after {
+  display: flex; align-items: flex-start; gap: 10px;
+  padding: var(--sp-4);
+  border-radius: var(--r-btn);
+}
+.change__before { background: var(--c-surface); border: 1px solid var(--c-line); color: var(--c-ink-soft); }
+.change__after  { background: var(--c-purple-tint); color: var(--c-ink); font-weight: var(--fw-semi); }
+.change__tag {
+  flex: none;
+  font-size: 11px; font-weight: var(--fw-bold); letter-spacing: 0.02em;
+  padding: 3px 8px; border-radius: var(--r-pill);
+  margin-top: 2px;
+}
+.change__before .change__tag { background: var(--c-line); color: var(--c-ink-soft); }
+.change__after  .change__tag { background: var(--c-purple); color: #fff; }
+
+@media (min-width: 760px) {
+  .change__head {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: var(--sp-4);
+    padding-inline: var(--sp-4);
+    font-size: var(--fs-caption); font-weight: var(--fw-bold);
+    color: var(--c-ink-soft);
+  }
+  .change__head span:last-child { color: var(--c-purple); }
+  .change { gap: var(--sp-3); }
+  .change__row { grid-template-columns: 1fr 1fr; gap: var(--sp-4); align-items: stretch; }
+  /* 넓은 화면에서는 열 제목이 있으니 줄마다 붙는 꼬리표를 뺀다 */
+  .change__tag { display: none; }
+  .change__before, .change__after { align-items: center; }
+}
+
 /* ── 신뢰 (숫자) ───────────────────────────────────────────────────────── */
 .proof { display: grid; gap: var(--sp-4); margin-top: var(--sp-6); }
 .proof__card {
@@ -445,11 +595,37 @@ h3 { font-size: var(--fs-h3); }
 }
 .field__error { font-size: var(--fs-caption); color: var(--c-danger); min-height: 0; }
 
+/* 눌러서 채우는 문구 — "뭐라고 써야 하지"에서 멈추는 걸 막는다 */
+.chips { display: flex; flex-wrap: wrap; gap: 6px; margin-bottom: 2px; }
+.chip {
+  min-height: 44px;              /* 터치 타깃 */
+  padding: 10px 14px;
+  border: 1px solid var(--c-line);
+  border-radius: var(--r-pill);
+  background: var(--c-bg);
+  color: var(--c-ink-soft);
+  font-size: 13px; font-weight: var(--fw-semi);
+  cursor: pointer;
+  transition: background var(--t-fast), border-color var(--t-fast), color var(--t-fast);
+}
+.chip:hover { background: var(--c-purple-tint); border-color: var(--c-purple); color: var(--c-purple-deep); }
+.chip[aria-pressed="true"] { background: var(--c-purple); border-color: var(--c-purple); color: #fff; }
+
+.proof__cta { margin-top: var(--sp-5); font-size: var(--fs-caption); color: var(--c-ink); }
+.proof__limit {
+  margin-top: var(--sp-3);
+  max-width: var(--w-text);
+  font-size: var(--fs-caption); color: var(--c-ink-soft);
+}
+
 .form__note { font-size: var(--fs-caption); color: var(--c-ink-soft); }
 .form__status { font-size: var(--fs-caption); font-weight: var(--fw-semi); min-height: 1.2em; }
 .form__status[data-state="ok"]   { color: var(--c-purple-deep); }
 .form__status[data-state="err"]  { color: var(--c-danger); }
-/* 전송 실패·메일앱 미실행 시 작성한 내용을 꺼내주는 자리 */
+/* 전송 실패·메일앱 미실행 시 작성한 내용을 꺼내주는 자리.
+   ※ 클래스의 display 가 [hidden] 의 기본 display:none 을 이긴다.
+      hidden 을 명시적으로 다시 눌러주지 않으면 처음부터 보인다. */
+.form__fallback[hidden] { display: none; }
 .form__fallback {
   display: grid; gap: var(--sp-3);
   padding: var(--sp-4);
@@ -510,6 +686,8 @@ h3 { font-size: var(--fs-h3); }
 }
 
 @media (min-width: 900px) {
+  .steps { grid-template-columns: repeat(3, 1fr); }
+  .step { flex-direction: column; gap: var(--sp-3); }
   .hero { padding-block: var(--sp-section); }
   .hero__grid { grid-template-columns: 1.05fr 0.95fr; gap: var(--sp-7); }
   .cards { grid-template-columns: repeat(4, 1fr); }
