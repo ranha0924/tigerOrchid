@@ -121,7 +121,8 @@
       org:     (fd.get('org')     || '').toString().trim(),
       contact: (fd.get('contact') || '').toString().trim(),
       message: (fd.get('message') || '').toString().trim(),
-      consent: !!fd.get('consent')
+      consent: !!fd.get('consent'),
+      hp:      (fd.get('_honey')  || '').toString()   // 봇만 채우는 칸
     };
   }
 
@@ -147,6 +148,12 @@
   /* 어떤 방식으로 보낼지 — 설정이 부실하면 자동으로 mailto 로 내려간다 */
   function resolveMode() {
     var mode = cfg.FORM_MODE;
+    if (mode === 'formsubmit') {
+      var t = ((cfg.formsubmit || {}).target || '').trim();
+      var isEmail = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/.test(t);
+      var isAlias = /^[A-Za-z0-9]{8,}$/.test(t);   // 활성화 후 받는 별칭
+      return (isEmail || isAlias) ? 'formsubmit' : 'mailto';
+    }
     if (mode === 'google') {
       var g = cfg.google || {};
       var e = g.entries || {};
@@ -174,6 +181,46 @@
       '문의 내용:',
       v.message || '(없음)'
     ].join('\n');
+  }
+
+  /* 기본 — FormSubmit 중계: 운영자 메일함으로 바로 전달된다.
+     구글 폼과 달리 응답을 읽을 수 있으므로 "정말 접수됐는지" 를 확인할 수 있다.
+     확인이 안 되면(주소 미활성화·네트워크 끊김·서비스 장애) 성공이라고 말하지 않는다. */
+  function sendFormSubmit(v) {
+    var f    = cfg.formsubmit || {};
+    var url  = 'https://formsubmit.co/ajax/' + encodeURIComponent((f.target || '').trim());
+    var ctl  = window.AbortController ? new AbortController() : null;
+    // 응답 없이 매달려 있으면 "보내는 중입니다…" 가 영원히 남는다. 15초에서 끊는다.
+    var timer = setTimeout(function () { ctl && ctl.abort(); }, 15000);
+
+    var req = fetch(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json', 'Accept': 'application/json' },
+      signal: ctl ? ctl.signal : undefined,
+      body: JSON.stringify({
+        _subject:  (f.subject || 'WORD QUEST 도입 문의') + ' — ' + v.org,
+        _template: 'table',
+        _captcha:  'false',
+        _honey:    v.hp,
+        '성함':      v.name,
+        '소속':      v.org,
+        '연락처':    v.contact,
+        '문의 내용': v.message || '(없음)',
+        '보낸 페이지': location.href
+      })
+    }).then(function (res) {
+      return res.json().catch(function () { return null; }).then(function (data) {
+        if (!res.ok) throw new Error('HTTP ' + res.status + (data && data.message ? ' — ' + data.message : ''));
+        // success 는 true 또는 "true" 로 온다. 확실할 때만 접수로 인정한다.
+        var ok = data && (data.success === true || String(data.success).toLowerCase() === 'true');
+        if (!ok) throw new Error((data && data.message) || '접수 확인을 받지 못했습니다');
+      });
+    });
+
+    return req.then(
+      function ()    { clearTimeout(timer); },
+      function (err) { clearTimeout(timer); throw err; }
+    );
   }
 
   /* 1안 — Google Form: 숨은 iframe 으로 POST (CORS 우회) */
@@ -245,7 +292,7 @@
     var url = 'mailto:' + m.to
       + '?subject=' + encodeURIComponent(m.subject + ' — ' + v.org)
       + '&body=' + encodeURIComponent(bodyText(v));
-    showFallback(v, m.to);
+    showFallback(v, m.to, '메일 창이 뜨지 않았다면');
     window.location.href = url;
     return Promise.resolve();
   }
@@ -254,10 +301,12 @@
   var fallbackBody = form.querySelector('[data-fallback-body]');
   var fallbackCopy = form.querySelector('[data-fallback-copy]');
 
-  function showFallback(v, to) {
+  function showFallback(v, to, lead) {
     if (!fallback || !fallbackBody) return;
     fallbackBody.textContent = bodyText(v);
     fallback.hidden = false;
+    var leadEl = fallback.querySelector('[data-fallback-lead]');
+    if (leadEl && lead) leadEl.textContent = lead;
     var link = fallback.querySelector('[data-fallback-mail]');
     if (link && to) { link.href = 'mailto:' + to; link.textContent = to; }
   }
@@ -299,9 +348,10 @@
     submit.disabled = true;
     say('보내는 중입니다…', '');
 
-    var task = mode === 'google'    ? sendGoogle(v)
-             : mode === 'firestore' ? sendFirestore(v)
-             :                        sendMailto(v);
+    var task = mode === 'formsubmit' ? sendFormSubmit(v)
+             : mode === 'google'     ? sendGoogle(v)
+             : mode === 'firestore'  ? sendFirestore(v)
+             :                         sendMailto(v);
 
     task.then(function () {
       if (mode === 'mailto') {
@@ -310,14 +360,20 @@
         submit.disabled = false;
         return;
       }
+      // 앞선 시도에서 띄운 복사 상자가 남아 있으면 접수된 뒤엔 치운다
+      if (fallback) fallback.hidden = true;
       // 구글 폼은 응답을 읽을 수 없어 실패를 감지하지 못한다.
       // 입력값을 지우지 않고 남겨서, 접수가 안 됐을 때 다시 보낼 수 있게 한다.
       submit.disabled = true;
       submit.textContent = '문의를 보냈습니다';
-      say('문의가 접수되었습니다. 제작자가 직접 연락드리겠습니다. 며칠 내 연락이 없으면 ranha.projects@gmail.com 으로 다시 보내주세요.', 'ok');
-    }).catch(function () {
+      say(mode === 'formsubmit'
+        ? '문의가 접수되었습니다. 제작자가 직접 읽고 연락드리겠습니다.'
+        : '문의가 접수되었습니다. 제작자가 직접 연락드리겠습니다. 며칠 내 연락이 없으면 ranha.projects@gmail.com 으로 다시 보내주세요.', 'ok');
+    }).catch(function (err) {
+      // 방문자에게는 다음에 할 일만 말하고, 원인은 운영자가 콘솔에서 본다
+      if (window.console && console.warn) console.warn('[WQ] 문의 전송 실패:', (err && err.message) || err);
       say('전송에 실패했습니다. 아래 내용을 복사해 ranha.projects@gmail.com 으로 보내주시면 바로 확인하겠습니다.', 'err');
-      showFallback(v, (cfg.mailto && cfg.mailto.to) || 'ranha.projects@gmail.com');
+      showFallback(v, (cfg.mailto && cfg.mailto.to) || 'ranha.projects@gmail.com', '전송이 되지 않았습니다.');
       submit.disabled = false;
     });
   });

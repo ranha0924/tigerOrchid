@@ -657,7 +657,8 @@
     </ul>
 
     <!-- 폼 동작은 assets/js/config.js 의 FORM_MODE 로 정한다.
-         google → Google Form 전송 / firestore → inquiries 컬렉션 / mailto → 메일 폴백(기본) -->
+         formsubmit → 메일함으로 중계(기본) / google → Google Form / firestore → inquiries 컬렉션
+         / mailto → 위 설정이 비어 있을 때의 폴백 -->
     <form class="form" id="inquiry-form" novalidate>
       <div class="field" data-field="name">
         <label for="f-name">성함 <span class="req" aria-hidden="true">*</span></label>
@@ -691,9 +692,15 @@
       <div class="field field--consent" data-field="consent">
         <label for="f-consent" style="display:flex;gap:10px;align-items:flex-start;font-weight:var(--fw-regular)">
           <input id="f-consent" name="consent" type="checkbox" required style="min-height:0;width:18px;height:18px;margin-top:3px;flex:none" aria-describedby="err-consent">
-          <span><a href="privacy.html" target="_blank" rel="noopener">개인정보 수집·이용</a>에 동의합니다. (문의 답변 목적, 1년 보관) <span class="req" aria-hidden="true">*</span></span>
+          <span><a href="privacy.html" target="_blank" rel="noopener">개인정보 수집·이용 및 국외 이전</a>에 동의합니다. (문의 답변 목적, 1년 보관) <span class="req" aria-hidden="true">*</span></span>
         </label>
         <p class="field__error" id="err-consent"></p>
+      </div>
+
+      <!-- 사람은 보지 못하는 칸. 스팸 봇만 채우고, 채워지면 접수되지 않는다 -->
+      <div class="form__hp" aria-hidden="true">
+        <label for="f-honey">이 칸은 비워두세요</label>
+        <input id="f-honey" name="_honey" type="text" tabindex="-1" autocomplete="off">
       </div>
 
       <button class="btn btn--primary btn--block" type="submit" data-submit>문의 남기기</button>
@@ -702,7 +709,7 @@
 
       <!-- 전송이 실패했거나 메일 앱이 열리지 않았을 때, 작성한 내용을 잃지 않게 꺼내준다 -->
       <div class="form__fallback" data-fallback hidden>
-        <p>메일 창이 뜨지 않았다면 아래 내용을 복사해
+        <p><span data-fallback-lead>전송이 되지 않았습니다.</span> 아래 내용을 복사해
           <a href="mailto:ranha.projects@gmail.com" data-fallback-mail>ranha.projects@gmail.com</a> 으로 보내주세요.</p>
         <pre class="form__fallback-body" data-fallback-body></pre>
         <button class="btn btn--secondary btn--sm" type="button" data-fallback-copy>내용 복사하기</button>

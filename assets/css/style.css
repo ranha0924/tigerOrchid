@@ -659,6 +659,16 @@ h3 { font-size: var(--fs-h3); }
   font-size: var(--fs-caption); color: var(--c-ink-soft);
 }
 
+/* 스팸 봇 함정. 사람 눈·스크린리더·탭 순서 어디에도 걸리지 않게 화면 밖으로 뺀다.
+   display:none 을 쓰면 건너뛰는 봇이 있어 위치만 옮긴다. */
+.form__hp {
+  position: absolute; left: -9999px;
+  width: 1px; height: 1px; overflow: hidden;
+}
+/* 사람이 누를 수 있는 컨트롤이 아니므로 실제 높이도 0 으로 둔다.
+   (터치 타깃 44px 검사가 진짜 버튼·입력만 세도록) */
+.form__hp input { height: 0; min-height: 0; padding: 0; border: 0; }
+
 .form__note { font-size: var(--fs-caption); color: var(--c-ink-soft); }
 .form__status { font-size: var(--fs-caption); font-weight: var(--fw-semi); min-height: 1.2em; }
 .form__status[data-state="ok"]   { color: var(--c-purple-deep); }

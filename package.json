@@ -8,6 +8,7 @@
     "dev": "python3 -m http.server 8080",
     "verify": "node tools/verify.mjs",
     "verify:static": "node tools/verify.mjs --static",
+    "form:check": "node tools/form-check.mjs",
     "og": "node tools/render-og.mjs"
   },
   "devDependencies": {

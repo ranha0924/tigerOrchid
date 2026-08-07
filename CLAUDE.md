@@ -102,6 +102,7 @@ assets/js/main.js     슬라이더·폼 제출·스크롤
 assets/img/           실제 스크린샷 PNG 5장 (마스킹 + 브라우저/시스템 크롬 제거,
                       540×1063 로 통일), 몬스터, 제작자, OG, 파비콘
 tools/verify.mjs      자동 검증 + 100점 채점
+tools/form-check.mjs  ★ 문의가 진짜 도착하는지 점검 (npm run form:check)
 tools/render-og.mjs   OG 이미지(1200×630 PNG) 재생성
 docs/                 PLAN.md / DESIGN-SYSTEM.md / VERIFICATION.md
 ```
@@ -117,17 +118,39 @@ docs/                 PLAN.md / DESIGN-SYSTEM.md / VERIFICATION.md
 ## 7. 폼 동작 (중요)
 
 `assets/js/config.js`의 `FORM_MODE`로 갈린다.
+- `'formsubmit'` **(기본값)** — formsubmit.co 중계로 운영자 메일함에 바로 전달.
+  응답을 읽을 수 있어 **접수 여부를 확인할 수 있는 유일한 모드**다.
 - `'google'` — Google Form에 숨은 iframe POST. `formResponseUrl` + `entry.*` ID 필요.
 - `'firestore'` — 준비되면 `inquiries` 컬렉션 저장으로 전환 (어댑터 자리 마련됨).
-- `'mailto'` **(기본값/폴백)** — 설정 전에도 문의가 유실되지 않도록 메일 클라이언트로 넘김.
+- `'mailto'` **(폴백)** — 위 설정이 비면 자동으로 내려감. 메일 클라이언트로 넘긴다.
 
-설정이 비어 있으면 자동으로 mailto 폴백. **문의는 절대 조용히 사라지면 안 된다.**
+**문의는 절대 조용히 사라지면 안 된다.** 그래서:
+- FormSubmit 응답의 `success` 가 `true`/`"true"` 로 확인될 때만 "접수되었습니다"라고 말한다.
+  HTTP 오류·미활성화·네트워크 끊김·15초 타임아웃은 전부 **실패로 처리**하고
+  작성한 내용을 복사 상자에 꺼낸다. 실패 원인은 콘솔에만 남긴다(방문자에게 기술 문구 금지).
+- 실패 뒤 재시도해서 성공하면 복사 상자를 치운다.
+- 구글 폼 모드는 응답을 읽을 수 없어 실패를 감지하지 못한다. 그래서 성공 문구에
+  "며칠 내 연락이 없으면 다시 보내주세요"가 붙어 있다. **지우지 말 것.**
+
+**FormSubmit 은 최초 1회 주소 확인이 필요하다.** 확인 전 첫 요청은 접수되지 않으므로
+배포 전에 반드시 `npm run form:check` 로 `✔ 접수됨` 을 봐야 한다.
+
+폼에는 `name="_honey"` 허니팟이 있다 (`.form__hp`, 화면 밖 · `tabindex="-1"` · `aria-hidden`).
+사람은 절대 못 채우므로 높이를 0으로 둬서 "터치 타깃 44px" 검사에서 빠진다. **되돌리지 말 것.**
+
+접수 경로를 바꾸면 `privacy.html` 5항(처리 위탁 및 국외 이전)의 수탁자 표를 함께 고친다.
+제3자를 거치는 사실과 국외 전송은 반드시 밝힌다.
 
 ## 8. 남아 있는 사람 몫
 
 1. ~~실제 앱 스크린샷으로 교체~~ **완료** — `assets/img/screen-*.png` 5장이 실제 캡처다
    (전투·도감·오답TOP10+랭킹·학생별현황·단어배포). 마스킹 원본 좌표는 git 이력 참조.
-2. `config.js`에 Google Form URL/entry ID 입력
+2. ~~`config.js`에 Google Form URL/entry ID 입력~~ **폼 연결 완료 (FormSubmit 중계)** —
+   남은 건 **최초 1회 주소 확인**뿐이다. `npm run form:check` → 메일 링크 클릭 →
+   `npm run form:check` 재실행해 `✔ 접수됨` 확인. **이걸 하기 전엔 문의가 한 건도 안 들어온다.**
+   확인 후 FormSubmit 이 주는 별칭으로 `formsubmit.target` 을 바꾸면 소스에서 메일 주소가 사라진다.
+   또한 `privacy.html` 5항의 "FormSubmit (formsubmit.co)" 에 **운영 법인명·소재 국가**를 확인해
+   채워 넣을 것 (현재는 국외 전송이라는 사실만 밝혀 둔 상태).
 3. 1분 데모 영상 완성 → 히어로 슬라이드를 유튜브 unlisted 임베드로 교체 (`index.html`의 `<!-- VIDEO SLOT -->`)
 4. 9월 지표(참여율 %, 누적 학습 단어 수, 선생님 코멘트, 언론 보도 링크) → 5번 섹션 `<!-- SEPT SLOT -->`에 삽입
 5. 개인정보처리방침의 사업자 정보 확정

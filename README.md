@@ -37,8 +37,9 @@ npm run og             # tools/og-image.html → assets/img/og-image.png (1200×
 ## 배포 전 체크리스트
 
 > ⚠️ **릴리스 게이트 — 이건 반드시 처리하고 공개하세요.**
-> **문의 폼을 실제로 연결할 것.** 기본값 `mailto` 는 메일 앱이 없는 PC 에서 아무 일도
->    일어나지 않습니다. 페이지의 전환 목표가 문의 하나이므로, 연결 전에는 문의가 거의 안 들어옵니다.
+> **`npm run form:check` 를 돌려 "접수됨" 을 확인할 것.** 폼은 FormSubmit 중계로 연결돼 있지만,
+>    받을 주소를 **최초 1회 확인**해야 문의가 도착합니다. 확인 전에는 접수되지 않습니다.
+>    페이지의 전환 목표가 문의 하나이므로, 이걸 안 하면 문의가 한 건도 안 들어옵니다.
 
 ### 1. 도메인 교체 (필수)
 
@@ -52,16 +53,32 @@ npm run og             # tools/og-image.html → assets/img/og-image.png (1200×
 | `og:image` | `.../assets/img/og-image.png` |
 | `twitter:image` | 〃 |
 
-### 2. 문의 폼 연결
+### 2. 문의 폼 활성화 (필수 · 1회)
 
-`assets/js/config.js` **한 파일만** 고치면 됩니다.
+기본값은 **FormSubmit 중계**입니다. 계정을 만들 필요는 없지만, "이 주소로 받겠다" 는
+확인을 **한 번** 해줘야 문의가 도착합니다.
 
-- **1안 · Google Form (제일 빠름)** — 구글 폼을 만들고 `formResponseUrl` + `entry.*` ID 를 넣은 뒤
+```bash
+npm run form:check     # 1회차 — 확인 메일이 발송됩니다
+# → ranha.projects@gmail.com 메일함에서 FormSubmit 확인 메일의 링크를 클릭
+npm run form:check     # 2회차 — "✔ 접수됨" 이 뜨면 완료
+```
+
+`✔ 접수됨` 을 본 뒤에 공개하세요. 그전까지 폼은 **성공했다고 말하지 않고**
+"전송에 실패했습니다" 와 함께 작성한 내용을 복사할 수 있게 꺼내둡니다.
+
+받는 주소나 방식을 바꾸려면 `assets/js/config.js` **한 파일만** 고치면 됩니다.
+
+- **기본 · FormSubmit** — `formsubmit.target` 에 받을 이메일. 활성화 후 FormSubmit 이 주는
+  별칭(랜덤 문자열)으로 바꿔두면 소스에 메일 주소가 노출되지 않습니다.
+- **1안 · Google Form** — 구글 폼을 만들고 `formResponseUrl` + `entry.*` ID 를 넣은 뒤
   `FORM_MODE: 'google'`. 알림은 구글 폼 → 응답 → ⋮ → "새 응답에 대한 이메일 알림 받기".
 - **2안 · Firestore** — `inquiries` 컬렉션에 저장하는 엔드포인트를 만들고 `firestore.endpoint` 에 넣은 뒤
   `FORM_MODE: 'firestore'`.
-- **폴백 · mailto (기본값)** — 위 설정이 비어 있으면 자동으로 메일 클라이언트를 엽니다.
+- **폴백 · mailto** — 위 설정이 비어 있으면 자동으로 메일 클라이언트를 엽니다.
   **설정 전에도 문의가 조용히 사라지지 않습니다.**
+
+> 방식을 바꾸면 `privacy.html` 5항(처리 위탁 및 국외 이전)의 수탁자 표도 함께 고치세요.
 
 ### 3. 스크린샷 (완료 — 교체 시 참고)
 
