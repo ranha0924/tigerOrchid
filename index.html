@@ -334,25 +334,23 @@
     <div class="section__head">
       <p class="eyebrow">이미 교실에서</p>
       <h2 id="trust-title" class="proof__headline">실제 학교에서 영어 선생님이<br>수업·숙제로 사용 중입니다</h2>
-      <p class="lead muted">한 학년 <strong>5개 반</strong>에서 쓰고 있고, 2026년 7월에 학생 <strong>110명</strong>에게 직접 물었습니다.</p>
+      <p class="lead muted">한 학년 <strong>5개 반</strong>에서 쓰고 있고, 2026년 7월에 학생 <strong>110명</strong>에게 직접 물어 <strong>응답 113건</strong>을 받았습니다.</p>
     </div>
 
+    <!-- 헤드라인 층에는 확실한 세 개만 둔다. 나머지 분포는 아래 접기 안으로.
+         숫자를 늘리면 신뢰가 아니라 잡음이 된다. -->
     <div class="proof">
       <div class="proof__card">
         <p class="proof__stat"><span class="stat">69%</span> <strong>‘기존 암기 방식보다 낫다’</strong></p>
-        <p class="proof__desc">쓰고 있는 학생 <strong>110명</strong>에게 직접 물어본 결과입니다.</p>
+        <p class="proof__desc">‘훨씬 낫다’ 33% + ‘조금 낫다’ 36% 를 더한 값입니다. (78/113)</p>
       </div>
       <div class="proof__card">
         <p class="proof__stat"><span class="stat">50%</span> <strong>정해진 분량을 넘겨서 학습</strong></p>
-        <p class="proof__desc">자발적으로 정해진 분량을 초과 학습한 학생 다수. 절반이 “더 했다”고 답했습니다.</p>
+        <p class="proof__desc">자발적으로 정해진 분량을 초과 학습한 학생 다수. 그 이유를 직접 적은 학생이 57명입니다. (57/113)</p>
       </div>
       <div class="proof__card">
         <p class="proof__stat"><span class="stat">79%</span> <strong>‘없어지면 아쉽다’</strong></p>
-        <p class="proof__desc">내일부터 못 쓰게 된다면 어떻겠냐고 물었습니다.</p>
-      </div>
-      <div class="proof__card">
-        <p class="proof__stat"><span class="stat">75%</span> <strong>숙제가 아니어도 다시 쓰겠다</strong></p>
-        <p class="proof__desc">개학 후에도 쓰겠다(34%) 또는 시험기간에 쓰겠다(41%)고 답했습니다.</p>
+        <p class="proof__desc">‘매우 아쉽다’ 19% + ‘조금 아쉽다’ 60%. 내일부터 못 쓰게 된다면 어떻겠냐고 물었습니다.</p>
       </div>
     </div>
 
@@ -375,23 +373,59 @@
       선생님이 보시게 될 화면을 함께 보며 설명드립니다.
     </p>
 
-    <!-- 안 맞는 학생도 있다는 사실을 먼저 말한다. 과장하지 않는다는 신호가
-         나머지 숫자를 믿게 만든다. -->
-    <div class="proof__honest">
-      <h3>모든 학생에게 맞지는 않았습니다</h3>
-      <p>
-        <strong>7%</strong>는 ‘예전 방식이 낫다’고 답했고, <strong>25%</strong>는 개학 후에는 안 쓸 것 같다고 했습니다.
-        그중 한 학생이 이렇게 적었습니다.
-      </p>
-      <blockquote>
-        “저는 종이에 적힌 뜻을 외우는 걸 선호해서 별로라고 한 거지,
-        이걸로 단어 공부에 몰입하는 사람도 있을 거고 호불호가 갈리는 사이트라고 생각합니다.”
-      </blockquote>
-      <p class="why__note">
-        숫자를 부풀리지 않겠습니다. 반 전체가 좋아하는 도구는 없다고 생각합니다.
-        한 반에 4주만 써보시고 우리 반에 맞는지 직접 보시는 편이 빠릅니다.
-      </p>
-    </div>
+    <!-- 안 맞는 학생도 있다는 사실은 계속 밝힌다. 다만 구체적인 부정 수치는
+         접기 안으로 옮겼다 — 헤드라인 층에 두면 판단 근거가 아니라 의심이 된다.
+         숨기는 게 아니라 순서를 바꾼 것이다. 아래 접기에 원본 그대로 다 있다. -->
+    <p class="proof__limit">
+      모든 학생에게 맞지는 않았습니다. 반 전체가 좋아하는 도구는 없다고 생각합니다.
+      좋게 답하지 않은 학생의 비율과 그 학생이 직접 쓴 말까지, 설문 결과를 빼지 않고 아래에 열어둡니다.
+    </p>
+
+    <!-- 분포 전체. 각 값은 원본 설문에서 바로 계산되는 수치만 싣는다.
+         부정 응답을 지우지 않는다 — 과장하지 않는다는 신호가 나머지 숫자를 믿게 만든다. -->
+    <details class="faq__item survey">
+      <summary>설문 전체 데이터 보기</summary>
+      <div class="survey__body">
+        <p class="survey__meta">
+          2026년 7월 · 한 학년 5개 반 · 학생 110명 · 응답 113건.
+          아래 비율은 모두 <strong>응답 113건</strong>을 분모로 계산했습니다.
+        </p>
+
+        <div class="survey__scroll">
+        <table>
+          <thead>
+            <tr><th>물어본 것</th><th>값</th><th>어떻게 나온 값인지</th></tr>
+          </thead>
+          <tbody>
+            <tr><td>기존 암기 방식보다 낫다</td><td><strong>69%</strong></td><td>훨씬 낫다 33% + 조금 낫다 36% (78/113)</td></tr>
+            <tr><td>정해진 분량을 넘겨서 학습</td><td><strong>50%</strong></td><td>초과 학습한 이유를 직접 적은 학생 57명 (57/113)</td></tr>
+            <tr><td>없어지면 아쉽다</td><td><strong>79%</strong></td><td>매우 아쉽다 19% + 조금 아쉽다 60%</td></tr>
+            <tr><td>숙제가 아니어도 다시 쓰겠다</td><td><strong>75%</strong></td><td>개학 후에도 계속 34% + 시험기간에 41%</td></tr>
+            <tr><td>예전 방식이 낫다</td><td><strong>7%</strong></td><td>‘예전 방식이 낫다’를 고른 학생</td></tr>
+            <tr><td>개학 후에는 안 쓸 것 같다</td><td><strong>25%</strong></td><td>‘안 쓸 것 같다’를 고른 학생</td></tr>
+            <tr><td>추천 점수</td><td><strong>7.2 / 10</strong></td><td>‘친구에게 추천하겠는가’ 평균</td></tr>
+          </tbody>
+        </table>
+        </div>
+
+        <div>
+          <h3>좋게 답하지 않은 학생은 이렇게 적었습니다</h3>
+          <blockquote>
+            “저는 종이에 적힌 뜻을 외우는 걸 선호해서 별로라고 한 거지,
+            이걸로 단어 공부에 몰입하는 사람도 있을 거고 호불호가 갈리는 사이트라고 생각합니다.”
+          </blockquote>
+          <p class="why__note">
+            숫자를 부풀리지 않겠습니다. 한 반에 4주만 써보시고 우리 반에 맞는지
+            직접 보시는 편이 빠릅니다.
+          </p>
+        </div>
+
+        <p class="survey__meta">
+          설문 원본에는 학생 실명이 있어 공개하지 않습니다. 집계값과 익명 인용만 싣습니다.
+          계산 근거를 더 확인하고 싶으시면 <a href="#contact">문의</a>로 요청해 주세요.
+        </p>
+      </div>
+    </details>
 
     <!-- ═══ SEPT SLOT ══════════════════════════════════════════════════════
          9월에 여기에 추가한다. 지금 없는 것은 아래 둘뿐이다.

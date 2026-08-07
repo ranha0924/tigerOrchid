@@ -652,6 +652,33 @@ h3 { font-size: var(--fs-h3); }
 .chip:hover { background: var(--c-purple-tint); border-color: var(--c-purple); color: var(--c-purple-deep); }
 .chip[aria-pressed="true"] { background: var(--c-purple); border-color: var(--c-purple); color: #fff; }
 
+/* 설문 전체 분포 — 헤드라인 층에서 내린 수치를 빠짐없이 담는 접기.
+   FAQ 와 같은 생김새를 쓴다(.faq__item). 안쪽만 표를 담을 수 있게 넓힌다. */
+.survey { margin-top: var(--sp-4); max-width: 860px; }
+.survey__body {
+  display: grid; gap: var(--sp-5);
+  padding: 0 var(--sp-5) var(--sp-5);
+}
+.survey__meta { font-size: var(--fs-caption); color: var(--c-ink-soft); }
+.survey table {
+  width: 100%; border-collapse: collapse;
+  font-size: var(--fs-caption);
+}
+.survey th, .survey td {
+  border: 1px solid var(--c-line);
+  padding: 10px 12px;
+  text-align: left; vertical-align: top;
+}
+.survey th { background: var(--c-purple-tint); font-weight: var(--fw-bold); }
+.survey h3 { font-size: var(--fs-h3); margin-bottom: var(--sp-3); }
+.survey blockquote {
+  padding-left: var(--sp-4);
+  border-left: 3px solid var(--c-line);
+  color: var(--c-ink-soft);
+}
+/* 좁은 화면에서 표가 페이지를 밀지 않게 표만 따로 굴린다 */
+.survey__scroll { overflow-x: auto; }
+
 .proof__cta { margin-top: var(--sp-5); font-size: var(--fs-caption); color: var(--c-ink); }
 .proof__limit {
   margin-top: var(--sp-3);
@@ -737,6 +764,7 @@ h3 { font-size: var(--fs-h3); }
 }
 
 @media (min-width: 900px) {
+  .proof { grid-template-columns: repeat(3, 1fr); }   /* 헤드라인 숫자 세 개를 한 줄에 */
   .steps { grid-template-columns: repeat(3, 1fr); }
   .step { flex-direction: column; gap: var(--sp-3); }
   .hero { padding-block: var(--sp-section); }
