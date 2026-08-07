@@ -67,6 +67,10 @@ npm run form:check     # 2회차 — "✔ 접수됨" 이 뜨면 완료
 `✔ 접수됨` 을 본 뒤에 공개하세요. 그전까지 폼은 **성공했다고 말하지 않고**
 "전송에 실패했습니다" 와 함께 작성한 내용을 복사할 수 있게 꺼내둡니다.
 
+> ⚠️ `index.html` 을 **더블클릭해서 열면(`file://`) 폼이 동작하지 않습니다.**
+> FormSubmit 이 출처 없는 요청을 거부합니다. 브라우저에서 확인하실 때는
+> `npm run dev` 로 띄운 `http://localhost:8080` 에서 하세요.
+
 받는 주소나 방식을 바꾸려면 `assets/js/config.js` **한 파일만** 고치면 됩니다.
 
 - **기본 · FormSubmit** — `formsubmit.target` 에 받을 이메일. 활성화 후 FormSubmit 이 주는

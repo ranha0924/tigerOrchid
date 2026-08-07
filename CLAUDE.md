@@ -135,6 +135,15 @@ docs/                 PLAN.md / DESIGN-SYSTEM.md / VERIFICATION.md
 **FormSubmit 은 최초 1회 주소 확인이 필요하다.** 확인 전 첫 요청은 접수되지 않으므로
 배포 전에 반드시 `npm run form:check` 로 `✔ 접수됨` 을 봐야 한다.
 
+**FormSubmit 은 `Origin` 없는 요청을 거부한다.** ("Make sure you open this page through
+a web server") 그래서 두 가지를 기억할 것:
+- `index.html` 을 **더블클릭해서 `file://` 로 열면 폼이 동작하지 않는다.** 확인은
+  `npm run dev` 로 띄운 뒤에 하거나 배포된 주소에서 한다. (이때도 실패로 처리되어
+  작성한 내용은 복사 상자로 나온다 — 조용히 사라지지 않는다.)
+- 브라우저는 `Origin` 을 자동으로 붙이지만 Node 는 안 붙인다. 그래서
+  `tools/form-check.mjs` 는 `index.html` 의 **canonical** 을 읽어 `Origin`/`Referer` 로 실어 보낸다.
+  배포 도메인을 바꾸면 canonical 만 고치면 이 점검도 따라간다.
+
 폼에는 `name="_honey"` 허니팟이 있다 (`.form__hp`, 화면 밖 · `tabindex="-1"` · `aria-hidden`).
 사람은 절대 못 채우므로 높이를 0으로 둬서 "터치 타깃 44px" 검사에서 빠진다. **되돌리지 말 것.**
 

@@ -25,6 +25,16 @@ function loadConfig() {
   return win.WQ_CONFIG || {};
 }
 
+/* FormSubmit 은 Origin 이 없는 요청을 "파일로 연 페이지" 로 보고 거부한다.
+   브라우저는 자동으로 붙여주지만 Node 는 안 붙인다. 그래서 배포 주소를
+   index.html 의 canonical 에서 읽어 그대로 실어 보낸다.
+   (도메인을 바꾸면 canonical 만 고쳐도 이 점검이 따라간다) */
+function loadSiteUrl() {
+  const html = readFileSync(join(root, 'index.html'), 'utf8');
+  const m = html.match(/<link\s+rel="canonical"\s+href="([^"]+)"/i);
+  return m ? m[1] : 'http://localhost:8080/';
+}
+
 const ok   = (m) => console.log('\x1b[32m✔\x1b[0m ' + m);
 const bad  = (m) => console.log('\x1b[31m✘\x1b[0m ' + m);
 const info = (m) => console.log('  ' + m);
@@ -47,12 +57,22 @@ if (!target) {
 }
 info('받는 곳: ' + target);
 
+const siteUrl = loadSiteUrl();
+const origin  = new URL(siteUrl).origin;
+info('보내는 곳: ' + siteUrl + '  (index.html 의 canonical)');
+
 const stamp = new Date().toISOString();
 let res;
 try {
   res = await fetch('https://formsubmit.co/ajax/' + encodeURIComponent(target), {
     method: 'POST',
-    headers: { 'Content-Type': 'application/json', Accept: 'application/json' },
+    headers: {
+      'Content-Type': 'application/json',
+      Accept: 'application/json',
+      // 브라우저가 자동으로 붙이는 값을 여기서는 직접 넣어준다
+      Origin: origin,
+      Referer: siteUrl
+    },
     body: JSON.stringify({
       _subject: '[테스트] WORD QUEST 문의 폼 점검',
       _template: 'table',
@@ -86,11 +106,18 @@ bad('아직 접수되지 않습니다. (HTTP ' + res.status + ')');
 info('응답: ' + body);
 console.log('');
 
+const msg = (data && data.message ? String(data.message) : '').toLowerCase();
+
 if (!data) {
   /* FormSubmit 은 JSON 으로 답한다. 본문이 없으면 요청이 거기까지 못 간 것이다. */
   info('FormSubmit 의 응답 형식이 아닙니다. 활성화 문제가 아니라 연결 문제로 보입니다.');
   info('회사·학교 방화벽이나 프록시가 formsubmit.co 를 막고 있지 않은지 확인하고,');
   info('다른 네트워크(예: 휴대폰 테더링)에서 다시 실행해 보세요.');
+} else if (msg.includes('web server') || msg.includes('html file')) {
+  /* Origin 을 못 알아본 경우. 활성화와는 무관하다. */
+  info('FormSubmit 이 요청의 출처(Origin)를 인정하지 않았습니다. 활성화 문제가 아닙니다.');
+  info(`이 점검은 index.html 의 canonical 인 ${origin} 을 출처로 보냈습니다.`);
+  info('canonical 이 실제 배포 주소인지 확인하세요 (http:// 또는 https:// 로 시작해야 합니다).');
 } else {
   /* 아직 활성화 전이면 FormSubmit 이 확인 메일을 보내고 접수는 하지 않는다 */
   info('대부분 아래 최초 1회 절차가 남은 경우입니다:');
