@@ -8,7 +8,8 @@
     "dev": "python3 -m http.server 8080",
     "verify": "node tools/verify.mjs",
     "verify:static": "node tools/verify.mjs --static",
-    "og": "node tools/render-og.mjs"
+    "og": "node tools/render-og.mjs",
+    "site-url": "node tools/apply-site-url.mjs"
   },
   "devDependencies": {
     "playwright-core": "^1.49.1"

@@ -78,14 +78,60 @@
   document.querySelectorAll('[data-slider]').forEach(initSlider);
 
   /* ────────────────────────────────────────────────────────────────────────
+     후기 더 보기 — 핵심 4개만 먼저 보여주고 나머지를 펼친다.
+     네이티브 <button> 이라 키보드(Enter/Space)는 그대로 동작한다.
+     ──────────────────────────────────────────────────────────────────── */
+  var voicesBtn = document.querySelector('[data-voices-toggle]');
+  if (voicesBtn) {
+    var voicesMore = document.getElementById(voicesBtn.getAttribute('aria-controls'));
+    voicesBtn.addEventListener('click', function () {
+      var isOpen = voicesBtn.getAttribute('aria-expanded') === 'true';
+      voicesBtn.setAttribute('aria-expanded', isOpen ? 'false' : 'true');
+      if (voicesMore) voicesMore.hidden = isOpen;
+      voicesBtn.textContent = isOpen ? '후기 더 보기' : '후기 접기';
+    });
+  }
+
+  /* ────────────────────────────────────────────────────────────────────────
      도입 문의 폼
      ──────────────────────────────────────────────────────────────────── */
   var form = document.getElementById('inquiry-form');
   if (!form) return;
 
+  /* 커스텀 검증은 JS 가 살아 있을 때만 브라우저 기본 검증을 대신한다.
+     novalidate 를 HTML 에 두면 JS 가 죽었을 때 required 검증까지 사라진다.
+     (제출 자체는 HTML 의 method="post" 덕에 JS 가 죽어도 GET 으로 새지 않는다) */
+  form.setAttribute('novalidate', '');
+
   var cfg    = window.WQ_CONFIG || {};
   var status = form.querySelector('[data-status]');
   var submit = form.querySelector('[data-submit]');
+
+  /* 보도자료별 전환 확인용 유입 경로 — 주소의 utm_* 세 개만 허용하고 값은 정제한다.
+     쿠키·제3자 추적기는 쓰지 않는다. 값이 있을 때만 문의와 함께 저장된다
+     (개인정보처리방침의 '선택' 항목). */
+  var UTM_KEYS = ['utm_source', 'utm_medium', 'utm_campaign'];
+  function utmValues() {
+    var out = null;
+    try {
+      var qs = new URLSearchParams(window.location.search);
+      UTM_KEYS.forEach(function (k) {
+        var raw = qs.get(k);
+        if (!raw) return;
+        var clean = raw.replace(/[^\w가-힣 .\-]/g, '').slice(0, 100).trim();
+        if (!clean) return;
+        if (!out) out = {};
+        out[k] = clean;
+      });
+    } catch (err) { /* 주소 파싱이 실패해도 문의 자체는 막지 않는다 */ }
+    return out;
+  }
+  function utmLine(u) {
+    if (!u) return '';
+    return UTM_KEYS.filter(function (k) { return u[k]; })
+      .map(function (k) { return k + '=' + u[k]; })
+      .join(' ');
+  }
 
   var RULES = {
     name:    { msg: '성함을 적어주세요.' },
@@ -121,7 +167,8 @@
       org:     (fd.get('org')     || '').toString().trim(),
       contact: (fd.get('contact') || '').toString().trim(),
       message: (fd.get('message') || '').toString().trim(),
-      consent: !!fd.get('consent')
+      consent: !!fd.get('consent'),
+      utm:     utmValues()                       // 없으면 null
     };
   }
 
@@ -166,14 +213,16 @@
   }
 
   function bodyText(v) {
-    return [
+    var lines = [
       '성함: ' + v.name,
       '소속: ' + v.org,
       '연락처: ' + v.contact,
       '',
       '문의 내용:',
       v.message || '(없음)'
-    ].join('\n');
+    ];
+    if (v.utm) lines.push('', '유입 경로: ' + utmLine(v.utm));
+    return lines.join('\n');
   }
 
   /* 1안 — Google Form: 숨은 iframe 으로 POST (CORS 우회) */
@@ -192,10 +241,11 @@
       gf.target = frameName;
       gf.style.display = 'none';
 
-      var map = { name: v.name, org: v.org, contact: v.contact, message: v.message };
+      var map = { name: v.name, org: v.org, contact: v.contact, message: v.message,
+                  utm: utmLine(v.utm) };
       Object.keys(map).forEach(function (k) {
         var entry = g.entries[k];
-        if (!entry) return;
+        if (!entry || !map[k]) return;      // utm 은 entry 설정 + 값이 있을 때만 보낸다
         var input = document.createElement('input');
         input.type = 'hidden';
         input.name = entry;
@@ -222,14 +272,16 @@
     });
   }
 
-  /* 2안 — Firestore: inquiries 에 저장하는 엔드포인트로 POST */
+  /* 2안 — Firestore: inquiries 에 저장하는 엔드포인트로 POST
+     utm 은 값이 있을 때만 객체, 없으면 null — 추가 필드라 기존 수신부와 호환된다 */
   function sendFirestore(v) {
     return fetch(cfg.firestore.endpoint, {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({
         name: v.name, org: v.org, contact: v.contact, message: v.message,
-        page: location.href, ts: new Date().toISOString()
+        page: location.href, ts: new Date().toISOString(),
+        utm: v.utm
       })
     }).then(function (res) {
       if (!res.ok) throw new Error('HTTP ' + res.status);
@@ -283,8 +335,21 @@
     }
   });
 
+  /* 전송 중 중복 제출 방지 — 버튼 비활성화에 더해 플래그로 한 번 더 막는다 */
+  var inFlight = false;
+
+  function resetChips() {
+    form.querySelectorAll('[data-chip]').forEach(function (c) {
+      c.setAttribute('aria-pressed', 'false');
+    });
+  }
+
   form.addEventListener('submit', function (e) {
+    /* JS 가 여기 도달하면 기본 제출(HTML method="post")도 항상 막는다.
+       기본 제출은 개인정보를 URL 에 남기지는 않지만(POST), 페이지를 떠나며 입력을 잃는다. */
     e.preventDefault();
+    if (inFlight) return;
+
     var v = values();
     var bad = validate(v);
 
@@ -296,6 +361,7 @@
     }
 
     var mode = resolveMode();
+    inFlight = true;
     submit.disabled = true;
     say('보내는 중입니다…', '');
 
@@ -305,20 +371,26 @@
 
     task.then(function () {
       if (mode === 'mailto') {
-        // "보냈다"고 단정하지 않는다 — 메일 앱이 안 열렸을 수 있다
+        // "보냈다"고 단정하지 않는다 — 메일 앱이 안 열렸을 수 있다.
+        // 성공이 확인된 게 아니므로 입력값도 지우지 않는다.
         say('메일 앱을 열었습니다. 창이 뜨지 않았다면 아래 내용을 복사해 보내주세요.', 'ok');
         submit.disabled = false;
+        inFlight = false;
         return;
       }
-      // 구글 폼은 응답을 읽을 수 없어 실패를 감지하지 못한다.
-      // 입력값을 지우지 않고 남겨서, 접수가 안 됐을 때 다시 보낼 수 있게 한다.
+      // google/firestore 전송이 끝난 경우에만 입력을 초기화한다.
+      // (구글 폼은 응답을 읽을 수 없어 전송 완료를 접수로 간주한다)
       submit.disabled = true;
       submit.textContent = '문의를 보냈습니다';
+      form.reset();
+      resetChips();
       say('문의가 접수되었습니다. 제작자가 직접 연락드리겠습니다. 며칠 내 연락이 없으면 ranha.projects@gmail.com 으로 다시 보내주세요.', 'ok');
     }).catch(function () {
+      // 실패 시에는 입력값을 절대 지우지 않는다 — 복사해 보낼 수 있게 꺼내준다
       say('전송에 실패했습니다. 아래 내용을 복사해 ranha.projects@gmail.com 으로 보내주시면 바로 확인하겠습니다.', 'err');
       showFallback(v, (cfg.mailto && cfg.mailto.to) || 'ranha.projects@gmail.com');
       submit.disabled = false;
+      inFlight = false;
     });
   });
 
