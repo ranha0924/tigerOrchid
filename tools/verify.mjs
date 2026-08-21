@@ -49,15 +49,17 @@ const norm = (s) => s.replace(/[‘’']/g, "'").replace(/[“”"]/g, '"')
 const plain = norm(html);
 const has = (s) => plain.includes(norm(s));
 
-/* ══ A. 콘텐츠 정확도 (25) ══════════════════════════════════════════════ */
+/* ══ A. 콘텐츠 정확도 (25) ══════════════════════════════════════════════
+   2026-08 개편: 주 CTA 는 학원 파일럿, 학교 무료는 유지하되 먼저 강조하지 않는다. */
 const COPY = [
-  ['히어로 헤드라인',      '단어 숙제를, 아이들이 하고 싶어하게'],
-  ['히어로 서브',          "실제 학교 수업에서 사용 중인 영어 단어 학습 프로그램. 학생 110명 설문에서 69%가 '기존 암기 방식보다 낫다'고 답했습니다."],
-  ['CTA 1',                '학교는 무료로 시작하기'],
-  ['CTA 2',                '도입 문의하기'],
+  ['히어로 헤드라인',      '단어 숙제를, 아이들이 먼저 하게'],
+  ['히어로 서브',          "실제 학교 수업에서 사용 중인 영어 단어 학습 프로그램. 한 학년 5개 반이 사용했고, 학생 110명 설문에서 69%가 '기존 암기 방식보다 낫다'고 답했습니다."],
+  ['CTA 1 (주·학원)',      '학원 한 반 4주 체험 신청'],
+  ['CTA 2 (보조·학교)',    '학교 무료 도입 문의'],
+  ['헤더 CTA',             '학원 체험 신청'],
   ['2. 공감',              '단어 시험지 만들고, 채점하고, 숙제 안 해온 아이들 확인하고… 정작 아이들은 단어장을 펴는 순간 지루해합니다.'],
   ['3. 해결 카피',         '아이들은 게임처럼 즐기고, 선생님은 데이터로 확인합니다.'],
-  ['3. 해결 한 줄',        '문제를 풀어 몬스터를 잡고, 도감을 모으고, 반 전체가 보스에 도전합니다. 그 모든 기록이 선생님 대시보드에 쌓입니다.'],
+  ['3. 해결 한 줄',        'WORD QUEST(단어도감)에서는 문제를 풀어 몬스터를 잡고, 도감을 모으고, 반 전체가 보스에 도전합니다. 그 모든 기록이 선생님 대시보드에 쌓입니다.'],
   ['4. 기능 1',            '엑셀에서 단어를 복사해 붙여넣으면 끝'],
   ['4. 기능 2',            '교재를 찍으면 단어–뜻이 자동으로 등록'],
   ['4. 기능 3',            '누가 했는지, 정답률, 우리 반 최다 오답 TOP 10'],
@@ -69,9 +71,13 @@ const COPY = [
   ['6. 학생 코멘트 3',     '몬스터를 잡는 방식이 쾌감있다'],
   ['6. 학생 코멘트 4',     '하다 보니 시간 가는 줄 모르고 했어요'],
   ['7. 만든 사람',         'WORD QUEST는 고등학교 1학년 개발자가 만들었습니다. 제 학교 친구들이 매일 쓰는 모습을 보며, 매주 직접 업데이트하고 있습니다.'],
-  ['7. 만든 사람 2',       '필요한 기능은 말씀해 주세요 — 제가 직접 만들어 드립니다.'],
-  ['8. 요금 학교',         '무료입니다.'],
+  ['7. 만든 사람 2',       '교육 현장의 의견을 바탕으로 매주 개선하고 있습니다. 여러 학교와 학원에서 공통으로 필요한 기능을 우선 반영합니다.'],
+  ['8. 파일럿 타이틀',     '2026년 9월, 선착순 3개 학원 파일럿'],
   ['8. 요금 학원',         '한 반 4주 무료 체험'],
+  ['8. 파일럿 CTA',        '학원 파일럿 신청'],
+  ['8. 요금 학교',         '무료입니다.'],
+  ['8. 약정 없음',         '장기 약정과 위약금이 없습니다. 한 반에서 먼저 사용해보고 계속 이용할지 결정할 수 있습니다.'],
+  ['9. 폼 위 한 줄',       '문의 내용을 확인한 뒤 제작자가 직접 연락드립니다. 시연만 요청하셔도 괜찮습니다.'],
   ['9. 폼 아래 한 줄',     '남겨주시면 제작자가 직접 연락드립니다.'],
   ['10. 이메일',           'ranha.projects@gmail.com'],
   ['10. 인스타',           '@r.xanha']
@@ -81,8 +87,14 @@ check('A', 8, `스펙 카피 ${COPY.length}개 문자열 일치`, missing.length
       missing.length ? `누락: ${missing.map(([k]) => k).join(', ')}` : '');
 
 const h1 = (html.match(/<h1[^>]*>([\s\S]*?)<\/h1>/) || [])[1] || '';
-check('A', 3, 'H1 = 히어로 헤드라인', norm(h1) === norm('단어 숙제를, 아이들이 하고 싶어하게'), norm(h1));
-check('A', 3, '헤드라인(H1)에 "게임" 미노출 (톤 규칙)', !h1.includes('게임'));
+check('A', 3, 'H1 = 히어로 헤드라인', norm(h1) === norm('단어 숙제를, 아이들이 먼저 하게'), norm(h1));
+check('A', 2, '헤드라인(H1)에 "게임" 미노출 (톤 규칙)', !h1.includes('게임'));
+
+/* 브랜드 병기는 첫 상세 소개(3번 섹션) 한 번만 — 이후에는 WORD QUEST 로 통일 */
+const brandCoCount = (plain.match(/단어도감/g) || []).length;
+check('A', 1, '브랜드 병기 "WORD QUEST(단어도감)" 1회만',
+      brandCoCount === 1 && plain.includes('WORD QUEST(단어도감)'),
+      `"단어도감" ${brandCoCount}회`);
 
 const footerHtml = (html.match(/<footer class="site-footer"[\s\S]*?<\/footer>/) || [''])[0];
 const bodyBeforeFooter = html.slice(0, html.indexOf('<footer class="site-footer"'));
@@ -136,7 +148,7 @@ check('A', 1, '"시험·채점 대체"로 읽히지 않음 (외워오는 과정�
 
 /* 근거 없는 외부 URL 을 넣어두면 안 된다 */
 const outboundLinks = [...html.matchAll(/href="(https?:\/\/[^"]+)"/g)].map((m) => m[1]);
-const ALLOWED_HOSTS = ['cdn.jsdelivr.net', 'www.instagram.com', 'ranha0924.github.io',
+const ALLOWED_HOSTS = ['cdn.jsdelivr.net', 'www.instagram.com', 'tiger-orchid.vercel.app',
                        'schema.org', 'www.youtube-nocookie.com',
                        'word-quest-fywr.vercel.app'];   // 학생 앱 (운영자 확인)
 const unknownHosts = outboundLinks
@@ -229,23 +241,41 @@ check('C', 3, '모든 입력에 label 연결', unlabeled.length === 0, unlabeled
 check('C', 2, 'lang="ko" · skip link · :focus-visible',
       /<html lang="ko">/.test(html) && /skip-link/.test(html) && /:focus-visible/.test(style));
 
-/* ══ E. 기술 — 정적 부분 (13) ═══════════════════════════════════════════ */
+/* ══ E. 기술 — 정적 부분 (14) ═══════════════════════════════════════════ */
 const META = ['og:title', 'og:description', 'og:image', 'og:url', 'og:type',
               'og:image:width', 'og:image:height', 'twitter:card', 'twitter:title', 'twitter:image'];
 const metaMissing = META.filter((k) => !new RegExp(`(property|name)="${k}"`).test(html));
-check('E', 4, 'OG / Twitter 태그', metaMissing.length === 0, metaMissing.join(', '));
+check('E', 3, 'OG / Twitter 태그', metaMissing.length === 0, metaMissing.join(', '));
 
 check('E', 2, 'viewport · canonical · theme-color · favicon',
       /name="viewport"/.test(html) && /rel="canonical"/.test(html) &&
       /name="theme-color"/.test(html) && /rel="icon"/.test(html));
 
-const header = (html.match(/<header class="site-header">[\s\S]*?<\/header>/) || [''])[0];
-check('E', 3, '상단 고정 CTA → #contact', /position:\s*sticky/.test(style) && /href="#contact"/.test(header));
+/* 사이트 URL 은 config.js 의 SITE_BASE_URL 이 단일 소스다.
+   head 의 절대 URL 4곳이 어긋나면 (도메인을 바꾸고 npm run site-url 을
+   안 돌렸다는 뜻이므로) 여기서 잡는다. */
+const cfgSrc = read('assets/js/config.js');
+const siteBase = ((cfgSrc.match(/SITE_BASE_URL:\s*'([^']+)'/) || [])[1] || '').replace(/\/+$/, '');
+const headUrl = (re) => (html.match(re) || [])[1] || '';
+const canonicalHref = headUrl(/rel="canonical" href="([^"]+)"/);
+const ogUrlHref  = headUrl(/property="og:url" content="([^"]+)"/);
+const ogImgHref  = headUrl(/property="og:image" content="([^"]+)"/);
+const twImgHref  = headUrl(/name="twitter:image" content="([^"]+)"/);
+check('E', 2, '사이트 URL 단일 소스 (config.js SITE_BASE_URL ↔ canonical·og:url·og:image·twitter:image)',
+      !!siteBase && canonicalHref === siteBase + '/' && ogUrlHref === siteBase + '/' &&
+      ogImgHref === siteBase + '/assets/img/og-image.png' && twImgHref === ogImgHref,
+      `SITE_BASE_URL=${siteBase || '(없음)'} · canonical=${canonicalHref} · og:url=${ogUrlHref}`);
 
+const header = (html.match(/<header class="site-header">[\s\S]*?<\/header>/) || [''])[0];
+check('E', 2, '상단 고정 CTA → #contact', /position:\s*sticky/.test(style) && /href="#contact"/.test(header));
+
+/* GET 제출 금지 — method="post" 가 없으면 JS 가 죽었을 때 성함·연락처가
+   URL 쿼리스트링과 브라우저 기록에 남는다 */
 const formHtml = (html.match(/<form[\s\S]*?<\/form>/) || [''])[0];
 const fields = ['name="name"', 'name="org"', 'name="contact"', 'name="message"'];
-check('E', 2, '문의 폼 4필드 + 제출',
-      fields.every((f) => formHtml.includes(f)) && /type="submit"/.test(formHtml));
+check('E', 2, '문의 폼 4필드 + method="post" + 제출',
+      fields.every((f) => formHtml.includes(f)) && /type="submit"/.test(formHtml) &&
+      /<form[^>]+method="post"/i.test(html));
 
 check('E', 2, '개인정보처리방침 페이지 + 푸터 링크',
       privacy.length > 500 && /href="privacy\.html"/.test(footerHtml));
@@ -359,6 +389,20 @@ if (!STATIC_ONLY) {
   await page.waitForTimeout(150);
   const sliderOk = await page.evaluate(() =>
     document.querySelector('[data-slider-track]').style.transform.includes('-100%'));
+  // 후기 더 보기 토글 — aria-expanded 와 hidden 이 함께 뒤집히고, 다시 닫혀야 한다
+  const voicesOk = await page.evaluate(() => {
+    const btn = document.querySelector('[data-voices-toggle]');
+    const more = btn && document.getElementById(btn.getAttribute('aria-controls'));
+    if (!btn || !more) return false;
+    const collapsed = btn.getAttribute('aria-expanded') === 'false' && more.hidden &&
+                      more.getBoundingClientRect().height === 0;
+    btn.click();
+    const expanded = btn.getAttribute('aria-expanded') === 'true' && !more.hidden &&
+                     more.getBoundingClientRect().height > 0;
+    btn.click();
+    const reClosed = btn.getAttribute('aria-expanded') === 'false' && more.hidden;
+    return collapsed && expanded && reClosed;
+  });
   // [hidden] 을 붙였는데 클래스의 display 가 이겨서 보이는 요소가 없는지
   const hiddenLeaks = await page.evaluate(() =>
     [...document.querySelectorAll('[hidden]')]
@@ -395,9 +439,9 @@ if (!STATIC_ONLY) {
   check('D', 4, '터치 타깃 44px 이상', smallTargets.length === 0, smallTargets.join(' | '));
   check('D', 5, '모바일 우선 렌더 정상 (320~1440)', true, '스크린샷: .verify/view-*.png');
   check('E', 3, 'JS 오류 0', errors.length === 0, errors.slice(0, 3).join(' | '));
-  check('E', 2, '폼 필수값 검증 + 슬라이더 동작',
-        formGuard.errs >= 3 && formGuard.status.length > 0 && sliderOk,
-        `에러표시 ${formGuard.errs}개 · 슬라이더 ${sliderOk ? 'OK' : 'NG'}`);
+  check('E', 2, '폼 필수값 검증 + 슬라이더 + 후기 토글',
+        formGuard.errs >= 3 && formGuard.status.length > 0 && sliderOk && voicesOk,
+        `에러표시 ${formGuard.errs}개 · 슬라이더 ${sliderOk ? 'OK' : 'NG'} · 후기토글 ${voicesOk ? 'OK' : 'NG'}`);
   check('B', 1, '형광펜 밑줄이 실제로 칠해짐 (부모 배경 뒤로 사라지지 않음)', hlPainted);
 
   check('E', 1, '[hidden] 요소가 실제로 숨겨져 있음', hiddenLeaks.length === 0, hiddenLeaks.join(', '));

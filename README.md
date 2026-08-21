@@ -40,17 +40,21 @@ npm run og             # tools/og-image.html → assets/img/og-image.png (1200×
 > **문의 폼을 실제로 연결할 것.** 기본값 `mailto` 는 메일 앱이 없는 PC 에서 아무 일도
 >    일어나지 않습니다. 페이지의 전환 목표가 문의 하나이므로, 연결 전에는 문의가 거의 안 들어옵니다.
 
-### 1. 도메인 교체 (필수)
+### 1. 도메인 (단일 소스)
 
-`index.html` `<head>` 의 아래 4곳을 실제 도메인으로 바꾸세요. OG 이미지는 **절대경로**여야
-카카오톡·페이스북 공유 미리보기가 뜹니다.
+사이트 주소는 `assets/js/config.js` 의 **`SITE_BASE_URL` 한 곳**에서 관리합니다.
+현재 값은 `https://tiger-orchid.vercel.app` 입니다.
 
-| 위치 | 현재 값 |
-|---|---|
-| `<link rel="canonical">` | `https://ranha0924.github.io/tigerOrchid/` |
-| `og:url` | 〃 |
-| `og:image` | `.../assets/img/og-image.png` |
-| `twitter:image` | 〃 |
+사용자 지정 도메인으로 옮길 때:
+
+```bash
+# 1) assets/js/config.js 의 SITE_BASE_URL 만 고친다 (끝 슬래시 없이)
+# 2) index.html 의 canonical / og:url / og:image / twitter:image 4곳에 반영
+npm run site-url
+```
+
+OG 이미지는 **절대경로**여야 카카오톡·페이스북 공유 미리보기가 뜹니다.
+HTML 과 `SITE_BASE_URL` 이 어긋나면 `npm run verify` 가 잡아냅니다.
 
 ### 2. 문의 폼 연결
 
@@ -58,10 +62,21 @@ npm run og             # tools/og-image.html → assets/img/og-image.png (1200×
 
 - **1안 · Google Form (제일 빠름)** — 구글 폼을 만들고 `formResponseUrl` + `entry.*` ID 를 넣은 뒤
   `FORM_MODE: 'google'`. 알림은 구글 폼 → 응답 → ⋮ → "새 응답에 대한 이메일 알림 받기".
+  보도자료별 전환을 보려면 "유입 경로" 단답 질문을 하나 더 만들어 `entries.utm` 에 ID 를 넣으세요(선택).
 - **2안 · Firestore** — `inquiries` 컬렉션에 저장하는 엔드포인트를 만들고 `firestore.endpoint` 에 넣은 뒤
-  `FORM_MODE: 'firestore'`.
+  `FORM_MODE: 'firestore'`. 전송 JSON 에 `utm`(utm_source/medium/campaign, 없으면 null)이 함께 갑니다.
 - **폴백 · mailto (기본값)** — 위 설정이 비어 있으면 자동으로 메일 클라이언트를 엽니다.
   **설정 전에도 문의가 조용히 사라지지 않습니다.**
+
+폼은 `method="post"` 입니다 — JS 가 죽어도 성함·연락처가 URL 쿼리스트링에 남지 않습니다.
+**GET 으로 되돌리지 마세요.**
+
+### 2.5 학원 월 시작 가격 (확정 대기)
+
+요금 섹션의 학원 카드는 지금 "시작 가격은 문의 시 안내"로 되어 있습니다.
+가격이 확정되면 `index.html` 의 `<!-- PRICE SLOT -->` 주석 아래 줄을
+"체험 종료 후 월 ○○원부터"로 바꾸고, `tools/verify.mjs` 의 카피 목록도 맞춰주세요.
+**확정 전에는 임의 숫자를 넣지 않습니다.**
 
 ### 3. 스크린샷 (완료 — 교체 시 참고)
 
@@ -69,7 +84,7 @@ npm run og             # tools/og-image.html → assets/img/og-image.png (1200×
 
 | 파일 | 화면 | 쓰이는 곳 |
 |---|---|---|
-| `screen-dashboard.png` | 최다 오답 TOP 10 + 반 랭킹 | 히어로 슬라이드 1 |
+| `screen-dashboard.png` | 최다 오답 TOP 10 + 반 랭킹 | 히어로 슬라이드 1 — TOP 10 영역을 CSS 로 확대·크롭(`.zoomshot`) |
 | `screen-setup.png` | 엑셀 붙여넣기 · 반 배포 | 히어로 슬라이드 2 |
 | `screen-battle.png` | 몬스터 전투 | 3번 섹션 ① |
 | `screen-dex.png` | 포획 도감 | 3번 섹션 ② |
@@ -101,17 +116,18 @@ npm run og             # tools/og-image.html → assets/img/og-image.png (1200×
 ## 구조
 
 ```
-index.html              섹션 1~10
-privacy.html            개인정보처리방침 (푸터 필수 링크)
-assets/css/tokens.css   ★ 디자인 토큰 — 색·타이포·간격의 단일 진실 소스
-assets/css/style.css    레이아웃 · 컴포넌트
-assets/js/config.js     ★ 폼 엔드포인트 설정
-assets/js/main.js       슬라이더 · 폼 (의존성 0)
-assets/img/             실제 스크린샷 5장(마스킹 완료) · 몬스터 · OG · 파비콘
-tools/verify.mjs        자동 검증 + 채점
-tools/render-og.mjs     OG 이미지 생성
-docs/                   PLAN.md · DESIGN-SYSTEM.md · VERIFICATION.md
-CLAUDE.md               프로젝트 메모리 (톤 규칙 · 금지 목록)
+index.html               섹션 1~10
+privacy.html             개인정보처리방침 (푸터 필수 링크)
+assets/css/tokens.css    ★ 디자인 토큰 — 색·타이포·간격의 단일 진실 소스
+assets/css/style.css     레이아웃 · 컴포넌트
+assets/js/config.js      ★ 사이트 URL(SITE_BASE_URL) + 폼 엔드포인트 설정
+assets/js/main.js        슬라이더 · 후기 토글 · 폼 (의존성 0)
+assets/img/              실제 스크린샷 5장(마스킹 완료) · 몬스터 · OG · 파비콘
+tools/verify.mjs         자동 검증 + 채점
+tools/render-og.mjs      OG 이미지 생성
+tools/apply-site-url.mjs SITE_BASE_URL 을 index.html 메타 4곳에 반영 (npm run site-url)
+docs/                    PLAN.md · DESIGN-SYSTEM.md · VERIFICATION.md
+CLAUDE.md                프로젝트 메모리 (톤 규칙 · 금지 목록)
 ```
 
 ## 디자인 시스템

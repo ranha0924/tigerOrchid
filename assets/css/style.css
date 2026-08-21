@@ -231,7 +231,8 @@ h3 { font-size: var(--fs-h3); }
 .slider__viewport { position: relative; overflow: hidden; border-radius: 12px; }
 .slider__track { display: flex; transition: transform var(--t-base); will-change: transform; }
 .slide { flex: 0 0 100%; padding: var(--sp-4) 0; }
-.slide__inner { display: flex; flex-direction: column; align-items: center; gap: var(--sp-3); }
+/* 두 슬라이드 높이가 달라도(확대 컷 < 폰 목업) 어색하지 않게 세로 중앙 정렬 */
+.slide__inner { display: flex; flex-direction: column; align-items: center; justify-content: center; gap: var(--sp-3); height: 100%; }
 .slide__caption { font-size: var(--fs-caption); color: var(--c-ink-soft); text-align: center; }
 
 .slider__nav {
@@ -257,6 +258,24 @@ h3 { font-size: var(--fs-h3); }
   background: var(--c-line); transition: background var(--t-fast);
 }
 .slider__dot[aria-selected="true"]::before { background: var(--c-purple); }
+
+/* ── 히어로 확대 컷 ────────────────────────────────────────────────────────
+   대시보드 실제 캡처(540×1063)에서 '우리 반 최다 오답 TOP 10' 영역만
+   CSS 로 확대·크롭한다. 새 이미지를 만들지 않는다.
+   원본에서 y 76~648(높이 572px) 영역: 컨테이너 비율 540/572,
+   margin-top 백분율은 컨테이너 너비 기준이므로 76/540 = 14.07%. */
+.zoomshot {
+  position: relative;
+  overflow: hidden;
+  width: 100%;
+  max-width: 420px;
+  aspect-ratio: 540 / 572;
+  border-radius: 12px;
+  border: 1px solid var(--c-line);
+  background: var(--c-device);
+  box-shadow: 0 10px 30px rgba(33, 26, 51, 0.16);
+}
+.zoomshot img { width: 100%; height: auto; margin-top: -14.07%; }
 
 /* ── 폰 목업 ───────────────────────────────────────────────────────────── */
 .phone {
@@ -431,20 +450,6 @@ h3 { font-size: var(--fs-h3); }
 }
 .faq__item em { font-style: normal; font-family: ui-monospace, SFMono-Regular, Menlo, monospace; font-size: 0.94em; }
 
-/* ── 문의하면 무슨 일이 일어나는지 ─────────────────────────────────────── */
-.promise { display: grid; gap: 10px; margin-bottom: var(--sp-5); max-width: 560px; }
-.promise li {
-  display: flex; gap: 10px; align-items: flex-start;
-  font-size: var(--fs-caption); color: var(--c-ink);
-}
-.promise li::before {
-  content: ""; flex: none; margin-top: 6px;
-  width: 14px; height: 8px;
-  border-left: 2px solid var(--c-purple);
-  border-bottom: 2px solid var(--c-purple);
-  transform: rotate(-45deg);
-}
-
 /* ── 무엇이 달라지나 (지금 → 바뀜) ────────────────────────────────────── */
 /* 쌍 안쪽은 좁게, 쌍 사이는 넓게 — 그래야 "이건 짝"이라고 읽힌다 */
 .change { display: grid; gap: var(--sp-5); margin-top: var(--sp-6); }
@@ -558,6 +563,13 @@ h3 { font-size: var(--fs-h3); }
 .quote p { font-weight: var(--fw-semi); }
 .quote footer { margin-top: auto; padding-top: var(--sp-3); font-size: var(--fs-caption); color: var(--c-ink-soft); }
 
+/* 후기 더 보기 — 핵심 4개만 먼저, 나머지는 버튼으로 펼친다.
+   ※ .quotes 의 display:grid 가 [hidden] 의 기본 display:none 을 이기므로
+      hidden 상태를 명시적으로 눌러줘야 한다 (.form__fallback 과 같은 이유) */
+.quotes[hidden] { display: none; }
+.quotes--more { margin-top: var(--sp-4); }
+.voices__toggle { display: flex; margin: var(--sp-5) auto 0; }
+
 .voices__art { margin: var(--sp-6) auto 0; max-width: min(320px, 100%); }
 
 /* ── 만든 사람 ─────────────────────────────────────────────────────────── */
@@ -588,6 +600,17 @@ h3 { font-size: var(--fs-h3); }
 .plan__name { font-size: var(--fs-caption); font-weight: var(--fw-bold); color: var(--c-purple); letter-spacing: 0.06em; }
 .plan__price { font-family: var(--ff-head); font-size: var(--fs-h2); font-weight: var(--fw-bold); }
 .plan p { color: var(--c-ink); }
+.plan__list { display: grid; gap: 8px; }
+.plan__list li {
+  display: flex; gap: 10px; align-items: flex-start;
+  color: var(--c-ink);
+}
+.plan__list li::before {
+  content: ""; flex: none; margin-top: 9px;
+  width: 6px; height: 6px; border-radius: 50%;
+  background: var(--c-purple);
+}
+.plan .btn { margin-top: auto; }        /* 두 카드 높이가 달라도 버튼은 바닥 정렬 */
 
 /* ── 도입 문의 ─────────────────────────────────────────────────────────── */
 .contact { position: relative; overflow: hidden; background: var(--c-surface); }
